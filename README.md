@@ -17,7 +17,7 @@ OOCC is a sophisticated software tool designed to compare and evaluate object-to
 - **Web Framework:** Django
 
 ## Getting Started
-1. Clone the repository: `git clone https://gitlab.com/your-username/oocc.git`
+1. Clone the repository: `git clone https://git.rwth-aachen.de/pooya_sh1998/oocc.git`
 2. Set up the environment using Docker: `docker-compose up`
 3. Access the application via a web browser: `http://localhost:8000`
 
