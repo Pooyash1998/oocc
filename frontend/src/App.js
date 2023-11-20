@@ -1,13 +1,25 @@
 import React from 'react';
-import FileUpload from './components/FileUpload';
+import Header from './components/header';
+import Sidebar from './components/sidebar';
+import GraphView from './components/graphView';
+
+
+import './assets/App.scss';
+
+
 
 function App() {
-    return (
-        <div className="App">
-            <h1>OOCC APP</h1>
-            <FileUpload />
-        </div>
-    );
+  return (
+    <div className="app">
+        <header>
+          <Header />
+        </header>
+        <section className='body'>
+          <Sidebar />
+          <GraphView />
+        </section>
+    </div>
+  );
 }
 
 export default App;
