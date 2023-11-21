@@ -1,0 +1,39 @@
+.toggle-container {
+    .implicit-toggle-button {
+
+      background-color: #dedede;
+      color: rgb(0, 0, 0);
+      padding: 0.15em 0.15em;
+      border: 0.1rem solid;
+      border-radius: 0.3em ;
+      cursor: pointer;
+      font-family: M PLUS Rounded;
+      font-size: 0.9rem;
+      margin-top: 1vh;
+     
+      
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      transition: background-color 0.3s ease, transform 0.3s ease; 
+
+      &:hover {
+        transform: scale(1.05); // Slightly increase the size
+      }
+
+      &:active {
+        background-color: #aeaeae; // Darker shade when clicked
+        transform: scale(0.95); // Slightly decrease the size
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); // Inner shadow for depth effect
+      }
+  
+      &.enabled {
+        background-color: #dedede;
+      }
+  
+      &.disabled {
+        color: #a8a8a8;
+      }
+
+    }
+}
