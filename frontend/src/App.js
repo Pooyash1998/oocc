@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './components/header';
 import Sidebar from './components/sidebar';
 import GraphView from './components/graphView';
-
+import UploadModule from './components/UploadModule';
 
 import './assets/App.scss';
 
@@ -14,10 +14,11 @@ function App() {
         <header>
           <Header />
         </header>
-        <section className='body'>
-          <Sidebar />
-          <GraphView />
-        </section>
+        <div className='body'>
+          <div><Sidebar />
+            <div><UploadModule/></div>
+          </div>
+        </div>
     </div>
   );
 }

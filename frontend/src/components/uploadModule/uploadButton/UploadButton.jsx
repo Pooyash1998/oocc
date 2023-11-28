@@ -1,8 +1,11 @@
 import React from 'react';
+import './UploadButton.scss';
 
 function UploadButton({ onUpload }) {
     return (
-        <button onClick={onUpload}>Upload</button>
+        <div>
+      <button className="uploadButton">Upload</button>
+    </div>
     );
 }
 

@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
-import ImportButton from '../importButton'; // Importing the ImportButton component
-import UploadModule from '../uploadModule'; // Importing the UploadModule component
 import './Header.scss'; // Importing SCSS for styling
+import logoImage from './logo.ico'; // Import your logo image
+import Sidebar from '../sidebar'; // Import the Sidebar component
 
 function Header() {
-    const [isModalOpen, setModalOpen] = useState(false); // State to track if the modal is open
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
-    const openModal = () => setModalOpen(true); // Function to open the modal
-    const closeModal = () => setModalOpen(false); // Function to close the modal
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
 
-    return (
-        <section className="header">
-            <section className="header_text">Mirror</section>
-            <section className="header_importButton">
-                <ImportButton openModal={openModal} /> {/* Import Button */}
-                {isModalOpen && <UploadModule closeModal={closeModal} />} {/* Conditional rendering of Upload Module */}
-            </section>
-        </section>
-    );
+  return (
+    <div className="header">
+      <span className="menu-icon" onClick={toggleSidebar}>
+        &#9776;
+      </span>
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <span className="header_text">Mirror</span>
+      <span className="header_logo">
+        <img src={logoImage} alt="Logo" className="logo" />
+      </span>
+    </div>
+  );
 }
 
 export default Header;
