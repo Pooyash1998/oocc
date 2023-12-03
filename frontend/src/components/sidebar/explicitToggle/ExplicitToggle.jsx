@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import './ExplicitToggle.scss';
+import React, { useState } from 'react'
+import './ExplicitToggle.scss'
 
-function ExplicitToggle() {
-  const [isEnabled, setIsEnabled] = useState(true);
-
+function ExplicitToggle () {
+  const [isEnabled, setIsEnabled] = useState(true)
   const toggleEnabled = () => {
-    setIsEnabled(!isEnabled);
-  };
+    setIsEnabled(!isEnabled)
+  }
 
   return (
     <div className="toggle-container">
@@ -14,7 +13,7 @@ function ExplicitToggle() {
         {isEnabled ? 'Explicit Relationships' : 'Explicit Relationships'}
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default ExplicitToggle;
+export default ExplicitToggle

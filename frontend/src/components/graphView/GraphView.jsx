@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 import './GraphView.scss'
 
-function GraphView() {
-    return (
+function GraphView () {
+  return (
         <section className="graphView">
 
         </section>
-    )
+  )
 }
-export default GraphView;
+export default GraphView

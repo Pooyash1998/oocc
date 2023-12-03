@@ -1,3 +1,3 @@
-import VisibilityToggle from "./ExplicitToggle";
+import VisibilityToggle from './ExplicitToggle'
 
-export default VisibilityToggle;
+export default VisibilityToggle

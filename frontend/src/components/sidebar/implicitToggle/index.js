@@ -1,3 +1,3 @@
-import ImplicitToggle from './ImplicitToggle';
+import ImplicitToggle from './ImplicitToggle'
 
-export default ImplicitToggle;
+export default ImplicitToggle

@@ -1,3 +1,3 @@
-import UploadModule from './UploadModule';
+import UploadModule from './UploadModule'
 
-export default UploadModule;
+export default UploadModule

@@ -1,3 +1,3 @@
-import ImportButton from "./ImportButton";
+import ImportButton from './ImportButton'
 
 export default ImportButton

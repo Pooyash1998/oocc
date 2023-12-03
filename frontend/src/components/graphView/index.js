@@ -1,3 +1,3 @@
-import GraphView from "./GraphView";
+import GraphView from './GraphView'
 
-export default GraphView;
+export default GraphView

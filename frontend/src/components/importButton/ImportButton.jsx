@@ -1,13 +1,13 @@
 // ImportButton.jsx
-import React from 'react';
-import './ImportButton.scss'; // Importing SCSS for styling
+import React from 'react'
+import './ImportButton.scss'
 
-function ImportButton({ openModal }) {
-    return (
-        <button className="importButton" onClick={openModal}>
-            Import File
-        </button>
-    );
+function ImportButton ({ openModal }) {
+  return (
+    <button className="importButton" onClick={openModal}>
+        Import File
+    </button>
+  )
 }
 
-export default ImportButton;
+export default ImportButton

@@ -1,14 +1,11 @@
-import React from 'react';
-import Header from './components/header';
-import Sidebar from './components/sidebar';
-import GraphView from './components/graphView';
+import React from 'react'
+import Header from './components/header'
+import Sidebar from './components/sidebar'
+import GraphView from './components/graphView'
 
+import './assets/App.scss'
 
-import './assets/App.scss';
-
-
-
-function App() {
+function App () {
   return (
     <div className="app">
         <header>
@@ -19,7 +16,7 @@ function App() {
           <GraphView />
         </section>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

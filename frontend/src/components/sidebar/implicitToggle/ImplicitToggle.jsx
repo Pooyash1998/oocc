@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import './ImplicitToggle.scss'; // Import the SCSS file for styling
+import React, { useState } from 'react'
+import './ImplicitToggle.scss'
 
-function ImplicitToggle() {
-  const [isEnabled, setIsEnabled] = useState(true);
+function ImplicitToggle () {
+  const [isEnabled, setIsEnabled] = useState(true)
 
   const toggleEnabled = () => {
-    setIsEnabled(!isEnabled);
-  };
+    setIsEnabled(!isEnabled)
+  }
 
   return (
     <div className="toggle-container">
@@ -14,7 +14,7 @@ function ImplicitToggle() {
         {isEnabled ? 'Implicit Relationships' : 'Implicit Relationships'}
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default ImplicitToggle;
+export default ImplicitToggle
