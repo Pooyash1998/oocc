@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './ImplicitToggle.scss'; // Import the SCSS file for styling
 
 function ImplicitToggle() {
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(true);
 
   const toggleEnabled = () => {
     setIsEnabled(!isEnabled);

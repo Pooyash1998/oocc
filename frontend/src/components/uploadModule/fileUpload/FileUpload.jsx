@@ -8,7 +8,6 @@ function FileUpload() {
         setFile(event.target.files[0]);
     };
 
-    // Drag and Drop Handlers
     const onDragOver = (event) => {
         event.preventDefault();
     };
