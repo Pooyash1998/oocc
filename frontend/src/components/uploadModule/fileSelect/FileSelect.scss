@@ -1,13 +1,13 @@
 .fileUploadArea {
     display: flex;
-    margin: 20px 30px;
+    margin: 20px auto; /* Center the file upload area horizontally */
+    width: 80%; /* Adjust this value as needed */
     height: 150px;
     padding: 10px;
     border: 3px dashed #ccc;
     border-radius: 8px;
-    margin-left: 0;
-    align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically */
+    align-items: center;
+    justify-content: center;
     transition: transform 0.3s ease;
 
     &.fileSelected {

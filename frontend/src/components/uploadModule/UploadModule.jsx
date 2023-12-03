@@ -1,19 +1,36 @@
-import React from 'react';
-import FileUpload from './fileSelect'; // Import FileUpload Component
-import TextInput from './textInput'; // Import TextInput Component
+import React, { useState } from 'react';
+import FileSelect from './fileSelect';
+import TextInput from './textInput';
 import UploadButton from './uploadButton';
 import './UploadModule.scss';
 
 function UploadModule() {
-    return (
-            <div className="uploadModule">
-                <div className="uploadModuleContent">
-                    <FileUpload /> {/* File Upload Component */}
-                    <TextInput /> {/* Text Input Component */}
-                </div>
-                <UploadButton/>
-            </div>
-    );
+  const [file, setFile] = useState(null);
+
+  const handleFileSelect = (selectedFile) => {
+    setFile(selectedFile);
+  };
+
+  const handleFileUpload = () => {
+    // Perform the upload action using the selected file
+    if (file) {
+      console.log('Uploading file:', file);
+      // Add your upload logic here
+    } else {
+      console.log('No file selected');
+    }
+  };
+
+  return (
+    <div className="uploadModule">
+      <div className="uploadModuleContent">
+        <FileSelect onFileSelect={handleFileSelect} />
+        <TextInput />
+      </div>
+      <UploadButton onUpload={handleFileUpload} />
+      {file && <p>File selected: {file.name}</p>}
+    </div>
+  );
 }
 
 export default UploadModule;

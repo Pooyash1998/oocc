@@ -2,13 +2,13 @@
     textarea {
         display: flex;
         justify-content: center;
-        width: 95%;
-        height: 37vh;
+        width: 70%; /* Adjust this value as needed */
+        height: 150px;
         padding: 10px;
+        margin: 30px 20px; /* Center the textarea horizontally */
         border: 1px solid #ccc;
         border-radius: 4px;
-        resize: none;
         font-size: 0.6rem;
-        margin-left: 0;
+        resize: none;
     }
 }

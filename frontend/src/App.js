@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './components/header';
 import Sidebar from './components/sidebar';
 import GraphView from './components/graphView';
-import UploadModule from './components/UploadModule';
+import UploadModule from './components/uploadModule';
 
 import './assets/App.scss';
 

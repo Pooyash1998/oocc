@@ -1,3 +1,3 @@
-import FileUpload from "./FileSelect";
+import FileSelect from "./FileSelect"
 
-export default FileUpload
+export default FileSelect
