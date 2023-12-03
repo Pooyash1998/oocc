@@ -1,18 +1,32 @@
 import React, { useState } from 'react'
+import { Switch, FormControlLabel } from '@mui/material'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
 function ImplicitToggle () {
-  const [isEnabled, setIsEnabled] = useState(true)
+  const [checked, setChecked] = useState(true)
 
-  const toggleEnabled = () => {
-    setIsEnabled(!isEnabled)
+  const handleChange = (event) => {
+    setChecked(event.target.checked)
   }
 
   return (
-    <div className="toggle-container">
-      <button className={`implicit-toggle-button ${isEnabled ? 'enabled' : 'disabled'}`} onClick={toggleEnabled}>
-        {isEnabled ? 'Implicit Relationships' : 'Implicit Relationships'}
-      </button>
-    </div>
+    <FormControlLabel
+    control={
+      <Switch
+        checked={checked}
+        onChange={handleChange}
+        icon={<VisibilityOffIcon sx={{ marginTop: '-2px' }} />}
+        checkedIcon={<VisibilityIcon sx={{ marginTop: '-2px' }} />}
+      />
+    }
+    label={checked ? 'Implicit Relationships' : 'Implicit Relationships'}
+    sx={{
+      '& .MuiTypography-root': {
+        color: checked ? 'black' : 'grey'
+      }
+    }}
+    />
   )
 }
 

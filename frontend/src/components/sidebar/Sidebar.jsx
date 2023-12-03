@@ -1,15 +1,30 @@
 import React from 'react'
+import Drawer from '@mui/material/Drawer'
 import ExplicitToggle from './explicitToggle'
 import ImplicitToggle from './implicitToggle'
 import SearchModule from './searchModule'
 
-function Sidebar () {
+function Sidebar ({ open, onClose }) {
   return (
-        <section className="sidebar">
-            <ExplicitToggle/>
-            <ImplicitToggle/>
-            <SearchModule/>
-        </section>
+    <Drawer
+      variant="persistent"
+      anchor="left"
+      open={open}
+      sx={{
+        '& .MuiDrawer-paper': {
+          backgroundColor: '#e6e6e6',
+          width: 270, // Ensure this width matches the width in App.js
+          boxSizing: 'border-box'
+        }
+      }}
+    >
+      <section className="sidebar" style={{ padding: '16px' }}>
+        <ExplicitToggle />
+        <ImplicitToggle />
+        <SearchModule />
+      </section>
+    </Drawer>
   )
 }
+
 export default Sidebar
