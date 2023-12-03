@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import './ImplicitToggle.scss'
 
 function ImplicitToggle () {
   const [isEnabled, setIsEnabled] = useState(true)

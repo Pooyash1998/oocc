@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Searchbar from './searchbar'
 import Tags from './tags'
-import './SearchModule.scss'
 
 const SearchModule = () => {
   const [tags, setTags] = useState([])

@@ -1,24 +1,17 @@
 import React from 'react'
-import Header from './components/header'
+import HeaderComponent from './components/headerComponent'
 import Sidebar from './components/sidebar'
 import GraphView from './components/graphView'
-import { ConfigProvider } from 'antd'
-
-import './assets/App.scss'
 
 function App () {
   return (
-    <ConfigProvider theme={{ token: { colorPrimary: '#00b96b' } }} >
-      <div className="app">
-        <header>
-          <Header />
-        </header>
-        <section className='body'>
-          <Sidebar />
-          <GraphView />
-        </section>
-      </div>
-    </ConfigProvider>
+    <div className="app">
+        <HeaderComponent />
+      <section>
+        <Sidebar/>
+        <GraphView/>
+      </section>
+    </div>
   )
 }
 

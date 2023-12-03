@@ -1,5 +1,4 @@
 import React from 'react'
-import './Sidebar.scss'
 import ExplicitToggle from './explicitToggle'
 import ImplicitToggle from './implicitToggle'
 import SearchModule from './searchModule'

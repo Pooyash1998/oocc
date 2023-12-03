@@ -1,5 +1,4 @@
 import React from 'react'
-import './Tags.scss'
 
 const Tags = ({ tags, onRemoveTag }) => {
   return (
