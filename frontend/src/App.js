@@ -2,12 +2,14 @@ import React from 'react'
 import Header from './components/header'
 import Sidebar from './components/sidebar'
 import GraphView from './components/graphView'
+import { ConfigProvider } from 'antd'
 
 import './assets/App.scss'
 
 function App () {
   return (
-    <div className="app">
+    <ConfigProvider theme={{ token: { colorPrimary: '#00b96b' } }} >
+      <div className="app">
         <header>
           <Header />
         </header>
@@ -15,7 +17,8 @@ function App () {
           <Sidebar />
           <GraphView />
         </section>
-    </div>
+      </div>
+    </ConfigProvider>
   )
 }
 
