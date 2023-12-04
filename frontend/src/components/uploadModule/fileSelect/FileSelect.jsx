@@ -46,10 +46,13 @@ function FileSelect({ onFileSelect }) {
       onDragLeave={onDragLeave}
       onDrop={onDrop}
     >
-      <span className="areaTxt">Drag and drop your file here, or</span>
-      <label htmlFor="file-upload" className="browseButton">
-        Browse
-      </label>
+       <div className="areaTxt">
+        <span>Drag and drop your file here, or</span>
+        <label htmlFor="file-upload" className="browseButton">
+          Browse
+        </label>
+        {file ? null : <p id="sup">The supported formats are: .xml .json .sql</p>}
+      </div>
       <div className="dragDropArea">
         <input id="file-upload" type="file" onChange={onFileInputChange} hidden />
       </div>

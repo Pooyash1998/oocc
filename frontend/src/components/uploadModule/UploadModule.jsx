@@ -4,7 +4,8 @@ import TextInput from './textInput';
 import UploadButton from './uploadButton';
 import './UploadModule.scss';
 
-function UploadModule({ onUploadSuccess }) {
+
+function UploadModule({ onUploadSuccess ,onProcessSuccess}) {
   const [file, setFile] = useState(null);
 
   const handleFileSelect = (selectedFile) => {
@@ -18,7 +19,8 @@ function UploadModule({ onUploadSuccess }) {
       formData.append('file', file);
 
       try {
-        const response = await fetch('http://localhost:8000/api/eventlogs/', {
+        // Upload the file
+        const uploadResponse = await fetch('http://localhost:8000/api/eventlogs/', {
           method: 'POST',
           body: formData,
           headers: {
@@ -27,17 +29,36 @@ function UploadModule({ onUploadSuccess }) {
           },
         });
 
-        if (response.ok) {
-          const result = await response.json();
+        if (uploadResponse.ok) {
+          const result = await uploadResponse.json();
           console.log('Upload successful. Result:', result);
-          onUploadSuccess();  // Notify the parent component about the success
+
+          // Trigger processing after successful upload
+          const processResponse = await fetch(`http://localhost:8000/api/eventlogs/${result.id}/process_file/`, {
+            method: 'POST',
+          });
+
+          if (processResponse.ok) {
+            console.log('Processing successful.');
+            //testing block
+            const processedData = processResponse.json().processed_data;
+            // Pass the processed data to your GraphView component
+            // You may need to update the state or props accordingly
+            // Example assuming you have a state variable for processedData
+            onProcessSuccess(processedData);
+          } else {
+            console.error('Processing failed.');
+          }
+
+          // Notify the parent component about the success
+          onUploadSuccess();
         } else {
           console.error('Upload failed.');
         }
       } catch (error) {
         console.error('Error during upload:', error);
       }
-      setFile(null); //resetting the fileselection state in FileSelect
+      setFile(null); //resetting the file selection state in FileSelect
     } else {
       console.log('No file selected');
     }

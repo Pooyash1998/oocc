@@ -11,6 +11,11 @@ import './assets/App.scss';
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [uploadSuccessful, setUploadSuccessful] = useState(false);
+  //testing
+  const [processedData, setProcessedData] = useState(''); // Initialize with an empty string
+  const handleProcessSuccess = (data) => {
+    setProcessedData(data);
+  };
 
   const handleToggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -26,9 +31,11 @@ function App() {
       <div className="body">
         <Sidebar isOpen={isOpen} toggleSidebar={handleToggleSidebar} />
         {uploadSuccessful ? (
-          <GraphView isOpen={isOpen} />
+          <GraphView isOpen={isOpen} processedData={processedData} />
         ) : (
-          <UploadModule onUploadSuccess={handleUploadSuccess} />
+          <UploadModule
+            onUploadSuccess={handleUploadSuccess}
+            onProcessSuccess={handleProcessSuccess} /> //remove this function
         )}
       </div>
     </div>
