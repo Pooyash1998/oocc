@@ -22,7 +22,7 @@ function App() {
 
   return (
     <div className={`app ${isOpen ? 'sidebar-open' : ''}`}>
-      <Header toggleSidebar={handleToggleSidebar} />
+      <Header isOpen={isOpen} toggleSidebar={handleToggleSidebar} />
       <div className="body">
         <Sidebar isOpen={isOpen} toggleSidebar={handleToggleSidebar} />
         {uploadSuccessful ? (
