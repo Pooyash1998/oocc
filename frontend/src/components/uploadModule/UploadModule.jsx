@@ -18,9 +18,13 @@ function UploadModule() {
       formData.append('file', file);
 
       try {
-        const response = await fetch('http://localhost:8000/upload_ocel_event_logs/', {
+        const response = await fetch('http://localhost:8000/api/eventlogs/', {
           method: 'POST',
           body: formData,
+          headers: {
+            'Accept': 'application/json',
+            'Origin': 'http://localhost:3000',
+          },
         });
 
         if (response.ok) {

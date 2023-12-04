@@ -56,6 +56,9 @@ CORS_ORIGIN_ALLOW_ALL = True #This enables all API requests from a different ser
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
 ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 ROOT_URLCONF = 'backend.urls'
 
