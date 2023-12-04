@@ -1,13 +1,21 @@
+// GraphView.scss
 .graphView {
-    position: absolute;
-    top: 7vh;
-    left: 12.5vw;
-    right: 0vw;
-    bottom: 0vh;
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: calc(100% - 200px); /* Initial width excluding sidebar */
     padding: 0.8rem;
-    border: 0.3rem solid;
-    border-radius: 0.5rem;
+    border: 0.2rem solid;
+    border-radius: 0.0rem;
     margin: 0.8rem;
-    color: rgb(0, 0, 0);
+    color: rgb(241, 38, 38);
     height: 84vh;
-}
+    transition: flex-basis 0.3s ease; /* Add a smooth transition effect */
+  }
+  
+  /* Adjust flex-basis when the sidebar is open */
+  .app.sidebar-open .graphView {
+    flex-basis: calc(100% - 400px); /* Adjusted width when sidebar is open */
+    color: blue;
+  }
+  

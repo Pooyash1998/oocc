@@ -4,7 +4,7 @@ import TextInput from './textInput';
 import UploadButton from './uploadButton';
 import './UploadModule.scss';
 
-function UploadModule() {
+function UploadModule({ onUploadSuccess }) {
   const [file, setFile] = useState(null);
 
   const handleFileSelect = (selectedFile) => {
@@ -30,6 +30,7 @@ function UploadModule() {
         if (response.ok) {
           const result = await response.json();
           console.log('Upload successful. Result:', result);
+          onUploadSuccess();  // Notify the parent component about the success
         } else {
           console.error('Upload failed.');
         }
