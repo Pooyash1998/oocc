@@ -24,7 +24,8 @@ function ImplicitToggle () {
     sx={{
       '& .MuiTypography-root': {
         color: checked ? 'black' : 'grey'
-      }
+      },
+      marginLeft: '7px'
     }}
     />
   )

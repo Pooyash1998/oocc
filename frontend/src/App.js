@@ -31,7 +31,7 @@ function App () {
         {/* Sidebar */}
         <Box
           sx={{
-            width: sidebarOpen ? 30 : 0, // Adjust width for open/close
+            width: sidebarOpen ? 40 : 0, // Adjust width for open/close
             transition: 'width 0.5s ease',
             overflowX: 'hidden'
           }}
@@ -40,7 +40,7 @@ function App () {
         </Box>
 
         {/* Main content */}
-        <Box sx={{ flexGrow: 1, transition: 'margin 0.3s ease', marginLeft: sidebarOpen ? 30 : 0 }}>
+        <Box sx={{ flexGrow: 1, transition: 'margin 0.3s ease', marginLeft: sidebarOpen ? 40 : 0 }}>
           <Grid container>
             {/* Header */}
             <Grid item xs={12}>

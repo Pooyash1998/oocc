@@ -13,7 +13,7 @@ function Sidebar ({ open, onClose }) {
       sx={{
         '& .MuiDrawer-paper': {
           backgroundColor: '#e6e6e6',
-          width: 270, // Ensure this width matches the width in App.js
+          width: 350, // Ensure this width matches the width in App.js
           boxSizing: 'border-box'
         }
       }}
