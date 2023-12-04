@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
+    'rest_framework',  # for rest api
+    'corsheaders',  # for cors policies
     'oocc',
 ]
 
@@ -51,8 +52,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-CORS_ALLOWED_ORIGINS = [
+CORS_ORIGIN_ALLOW_ALL = True #This enables all API requests from a different server to be allowed.
+CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
 ]
 

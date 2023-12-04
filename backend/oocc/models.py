@@ -1,10 +1,7 @@
 # models.py
 from django.db import models
 
-class OcelEventLog(models.Model):
-    timestamp = models.DateTimeField()
-    event_type = models.CharField(max_length=255)
-    # Add other fields as needed
+class EventLog(models.Model):
+    file = models.FileField(upload_to='event_logs/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"{self.timestamp} - {self.event_type}"

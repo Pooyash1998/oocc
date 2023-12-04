@@ -1,8 +1,9 @@
 # serializers.py
 from rest_framework import serializers
-from .models import OcelEventLog
+from .models import EventLog
 
-class OcelEventLogSerializer(serializers.ModelSerializer):
+class EventLogSerializer(serializers.ModelSerializer):
     class Meta:
-        model = OcelEventLog
-        fields = '__all__'
+        model = EventLog
+        fields = ('id', 'file', 'uploaded_at')
+

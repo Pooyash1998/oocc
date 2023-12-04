@@ -16,14 +16,15 @@ Including another URLconf
 """
 # urls.py
 # backend/urls.py
-from django.conf import settings
-from django.conf.urls.static import static
-from django.urls import path
-from oocc.views import OcelEventLogUploadView
+from django.contrib import admin
+from django.urls import path, include
+from rest_framework import routers
+from oocc.views import EventLogViewSet
+
+router = routers.DefaultRouter()
+router.register(r'eventlogs', EventLogViewSet)
 
 urlpatterns = [
-    path('upload_ocel_event_logs/', OcelEventLogUploadView.as_view(), name='upload_ocel_event_logs'),
-    # Add other URLs as needed
+    path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
 ]
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
