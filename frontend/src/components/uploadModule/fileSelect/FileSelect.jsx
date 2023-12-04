@@ -27,6 +27,13 @@ function FileSelect({ onFileSelect }) {
     event.preventDefault();
     const droppedFile = event.dataTransfer.files[0];
     handleFileSelect(droppedFile);
+    onFileSelect(droppedFile); //notifying the parent component 
+  };
+  // File input change handler
+  const onFileInputChange = (event) => {
+    const selectedFile = event.target.files[0];
+    handleFileSelect(selectedFile);
+    onFileSelect(selectedFile); // Notify the parent component (UploadModule) about the selected file
   };
 
   return (
@@ -44,7 +51,7 @@ function FileSelect({ onFileSelect }) {
         Browse
       </label>
       <div className="dragDropArea">
-        <input id="file-upload" type="file" onChange={(e) => onFileSelect(e.target.files[0])} hidden />
+        <input id="file-upload" type="file" onChange={onFileInputChange} hidden />
       </div>
       {file && <p>File selected: {file.name}</p>}
     </div>

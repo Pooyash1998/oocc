@@ -1,25 +1,28 @@
 # views.py
-from django.shortcuts import render, redirect
-from .forms import FileUploadForm
-from ocpa.objects.log.importer.ocel import factory as ocel_import_factory
-from ocpa.algo.discovery.ocpn import algorithm as ocpn_discovery_factory
-from ocpa.algo.enhancement.token_replay_based_performance import algorithm as performance_factory
-from ocpa.objects.graph.constraint_graph.obj import ConstraintGraph, ActivityNode, ObjectTypeNode, FormulaNode, ControlFlowEdge, ObjectRelationEdge, PerformanceEdge
-import ocpa.algo.conformance.constraint_monitoring.algorithm as constraint_monitoring_factory
+from rest_framework.parsers import FileUploadParser
+from rest_framework.response import Response
+from rest_framework.views import View
+from rest_framework import status
+from .serializers import OcelEventLogSerializer
+from .models import OcelEventLog
 
+class OcelEventLogUploadView(View):
+    parser_classes = (FileUploadParser,)
 
-def process_file(file_path):
-    ocel = ocel_import_factory.apply(file_path)
-    # Perform processing using OPCA library methods
+    def post(self, request, *args, **kwargs):
+        file_serializer = OcelEventLogSerializer(data=request.data)
 
-def upload_file(request):
-    if request.method == 'POST':
-        form = FileUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            uploaded_file = form.save()
-            # Call a function to process the uploaded file using OPCA library
-            process_file(uploaded_file.file.path)
-            return redirect('success_view')
-    else:
-        form = FileUploadForm()
-    return render(request, 'upload_file.html', {'form': form})
+        if file_serializer.is_valid():
+            # Process the uploaded file using the ocpa library
+            # Perform actions on the OCEL event logs
+
+            # Save the event logs to the database
+            event_logs = file_serializer.save()
+            # You can also perform actions using the OCEL event logs here
+
+            # Serialize the saved logs for response
+            serialized_logs = OcelEventLogSerializer(event_logs, many=True)
+
+            return Response(serialized_logs.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

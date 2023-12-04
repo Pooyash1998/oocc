@@ -4,16 +4,17 @@ import './UploadButton.scss';
 function UploadButton({ onUpload }) {
   const fileInputRef = useRef(null);
 
-  const handleClick = () => {
-    // Trigger the file input click
-    fileInputRef.current.click();
-  };
+  const handleClick = (e) => {
+    e.preventDefault(); // Prevent the default behavior of the button
+    // Trigger the file input click only if there are no selected files
+      const files = fileInputRef.current.files;
+      onUpload(files);
+    }
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
-
-    // Call the onUpload callback with the selected file
-    onUpload(file);
+    const files = event.target.files;
+    // Call the onUpload callback with the selected files
+    onUpload(files);
   };
 
   return (

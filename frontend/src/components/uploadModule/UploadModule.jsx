@@ -11,11 +11,28 @@ function UploadModule() {
     setFile(selectedFile);
   };
 
-  const handleFileUpload = () => {
+  const handleFileUpload = async () => {
     // Perform the upload action using the selected file
     if (file) {
-      console.log('Uploading file:', file);
-      // Add your upload logic here
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch('http://localhost:8000/upload_ocel_event_logs/', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Upload successful. Result:', result);
+        } else {
+          console.error('Upload failed.');
+        }
+      } catch (error) {
+        console.error('Error during upload:', error);
+      }
+      setFile(null); //resetting the fileselection state in FileSelect
     } else {
       console.log('No file selected');
     }
@@ -28,7 +45,6 @@ function UploadModule() {
         <TextInput />
       </div>
       <UploadButton onUpload={handleFileUpload} />
-      {file && <p>File selected: {file.name}</p>}
     </div>
   );
 }
