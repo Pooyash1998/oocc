@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import ImportButton from './importButton'
 import UploadModule from './uploadModule'
+import ProgressBar from '../progressBar'
 
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -11,9 +12,15 @@ import CloseIcon from '@mui/icons-material/Close'
 
 function HeaderComponent ({ onMenuClick, isSidebarOpen }) {
   const [isModalOpen, setModalOpen] = useState(false)
+  const [progress, setProgress] = useState(0);
+  const [showProgressBar, setShowProgressBar] = useState(false)
 
   const openModal = () => setModalOpen(true)
-  const closeModal = () => setModalOpen(false)
+  const closeModal = () => {
+    setModalOpen(false);
+    setShowProgressBar(true);
+    setProgress(15);
+  }
 
   return (
     <AppBar
@@ -46,6 +53,7 @@ function HeaderComponent ({ onMenuClick, isSidebarOpen }) {
           <ImportButton openModal={openModal} />
           {isModalOpen && <UploadModule closeModal={closeModal} />}
         </section>
+        {showProgressBar && <ProgressBar progressValue={progress} />}
         <Typography variant="h3" align="center" color="black" sx={{ flexGrow: 1 }}>
           MIRROR
         </Typography>

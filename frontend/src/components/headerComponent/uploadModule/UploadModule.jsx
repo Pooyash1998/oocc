@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import FileUpload from './fileUpload'
-import TextInput from './textInput'
 
 import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
@@ -16,6 +15,8 @@ function UploadModule ({ closeModal, onUploadSuccess, onProcessSuccess }) {
 
   // Function to handle file upload
   const handleFileUpload = async () => {
+    closeModal()
+
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
@@ -27,10 +28,10 @@ function UploadModule ({ closeModal, onUploadSuccess, onProcessSuccess }) {
         const uploadResponse = await fetch('http://localhost:8000/api/eventlogs/', {
           method: 'POST',
           body: formData,
-          // headers: {
-          //  'Accept': 'application/json',
-          //  'Origin': 'http://localhost:3000',
-          // },
+          headers: {
+            'Accept': 'application/json',
+            'Origin': 'http://localhost:3000',
+          },
         });
 
         console.log('Upload response:', uploadResponse); // Debugging log
@@ -66,51 +67,51 @@ function UploadModule ({ closeModal, onUploadSuccess, onProcessSuccess }) {
   };
 
   return (
-    <Modal
-      open={true}
-      onClose={closeModal}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-      <Box
+    <div>
+      <Modal
+        open={true}
+        onClose={closeModal}
         sx={{
-          position: 'relative',
-          backgroundColor: '#fff',
-          boxShadow: '0px 12px 15px 7px rgba(0,0,0,0.3)',
-          borderRadius: '10px',
-          p: 4,
-          width: '80%',
-          maxWidth: '1000px'
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
         }}
       >
-        {/* Close Button */}
-        <span
-          className="closeButton"
-          onClick={closeModal}
-          style={{
-            cursor: 'pointer',
-            position: 'absolute',
-            top: '3px',
-            right: '10px',
-            fontSize: '1.5rem'
+        <Box
+          sx={{
+            position: 'relative',
+            backgroundColor: '#fff',
+            boxShadow: '0px 12px 15px 7px rgba(0,0,0,0.3)',
+            borderRadius: '10px',
+            p: 4,
+            width: '80%',
+            maxWidth: '1000px'
           }}
         >
-          &times;
-        </span>
-
-        {/* Modal Content */}
-        <div style={{ position: 'relative' }}>
-          <FileUpload onFileSelect={handleFileSelect} />
-          <TextInput /> {/* Text Input Component */}
-          <UploadButton onUpload={handleFileUpload} onClick={closeModal}>
-            Upload
-          </UploadButton>
-        </div>
-      </Box>
-    </Modal>
+          {/* Close Button */}
+          <span
+            className="closeButton"
+            onClick={closeModal}
+            style={{
+              cursor: 'pointer',
+              position: 'absolute',
+              top: '3px',
+              right: '10px',
+              fontSize: '1.5rem'
+            }}
+          >
+            &times;
+          </span>
+          {/* Modal Content */}
+          <div style={{ position: 'relative' }}>
+            <FileUpload onFileSelect={handleFileSelect} />
+            <UploadButton onUpload={handleFileUpload} onClick={closeModal}>
+              Upload
+            </UploadButton>
+          </div>
+        </Box>
+      </Modal>
+    </div>
   )
 }
 
