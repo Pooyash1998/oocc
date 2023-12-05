@@ -41,18 +41,19 @@ function UploadModule({ onUploadSuccess ,onProcessSuccess}) {
           if (processResponse.ok) {
             console.log('Processing successful.');
             //testing block
-            const processedData = processResponse.json().processed_data;
-            // Pass the processed data to your GraphView component
-            // You may need to update the state or props accordingly
-            // Example assuming you have a state variable for processedData
-            onProcessSuccess(processedData);
-          } else {
-            console.error('Processing failed.');
-          }
+            //Ensure that the response contains the processed data
+            //const processedData = await processResponse.json();
+            //onProcessSuccess(processedData.processed_data);
+            } 
+            else {
+              console.log('Invalid processing response:');
+            }
 
           // Notify the parent component about the success
           onUploadSuccess();
-        } else {
+          }
+
+        else {
           console.error('Upload failed.');
         }
       } catch (error) {

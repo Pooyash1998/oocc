@@ -11,13 +11,7 @@ class EventLogViewSet(viewsets.ModelViewSet):
     queryset = EventLog.objects.all()
     serializer_class = EventLogSerializer
 
-   # @action(detail=True, methods=['post'])
-    #def process_file(self, request, pk=None):
-    #   file = request.data.get('file')
-    # Validate the file using the serializer
-    #   serializer = OCELSerializer(data=file)
-    #    if serializer.is_valid():
-    #        # Continue with further processing (to be implemented)
-    #        return Response({'message': 'File is valid'}, status=status.HTTP_200_OK)
-    #    else:
-    #      return Response({'error': 'Invalid file format', 'details': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    @action(detail=True, methods=['post'])
+    def process_file(self, request, pk=None):
+        print(request.data)  # Add this line to print request data
+        return Response({'message': 'File processed successfully.'}, status=status.HTTP_200_OK)
