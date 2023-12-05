@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { Paper, Typography, Button } from '@mui/material'
 
-function FileUpload () {
+function FileUpload ({ onFileSelect }) {
   const [file, setFile] = useState(null)
 
   const onFileChange = (event) => {
-    setFile(event.target.files[0])
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+    onFileSelect(selectedFile)
   }
 
   const onDragOver = (event) => {
