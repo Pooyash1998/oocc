@@ -1,0 +1,43 @@
+// Sidebar.scss
+.sidebar {
+  width: 200px; /* Set an initial width for the sidebar */
+  height: 100vh;
+  background-color:#9aadfab6; //#2c3e50;
+  position: fixed;
+  left: -200px; /* Move the sidebar off the screen initially */
+  top: 0;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center;
+  justify-content: center;
+  border-top-right-radius: 3px;
+  transition: left 0.3s ease; /* Add a smooth transition effect */
+  opacity: 100;
+  flex-direction: column;
+  backdrop-filter: blur(10px); /* Add a blur effect */
+  z-index: 2; // Set a higher value to make the sidebar appear above other elements
+  // ... other styles
+  
+  &.open {
+    left: 0%; /* Move the sidebar back onto the screen when open */
+  }
+
+  .close-button {
+    position: absolute;
+    top: 15px;
+    right : 20px;
+    font-size: 1.5em;
+    background: none;
+    border: none;
+    color: #ecf0f1;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    margin-left: auto; 
+    &:hover {
+      transform: scale(1.1);
+    }
+    &.clicked{
+      display: none;
+    }
+  }
+}

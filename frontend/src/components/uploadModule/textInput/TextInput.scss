@@ -1,0 +1,14 @@
+.textInputArea {
+    textarea {
+        display: flex;
+        justify-content: center;
+        width: 95%; /* Adjust this value as needed */
+        height: 190px;
+        padding: 10px;
+        margin: 20px auto; /* Center the file upload area horizontally */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 0.6rem;
+        resize: none;
+    }
+}
