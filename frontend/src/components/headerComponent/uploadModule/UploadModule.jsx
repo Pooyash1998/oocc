@@ -84,8 +84,8 @@ function UploadModule ({ closeModal, onUploadSuccess, onProcessSuccess }) {
             boxShadow: '0px 12px 15px 7px rgba(0,0,0,0.3)',
             borderRadius: '10px',
             p: 4,
-            width: '80%',
-            maxWidth: '1000px'
+            width: '40%',
+            height: '30vh'
           }}
         >
           {/* Close Button */}
@@ -105,9 +105,17 @@ function UploadModule ({ closeModal, onUploadSuccess, onProcessSuccess }) {
           {/* Modal Content */}
           <div style={{ position: 'relative' }}>
             <FileUpload onFileSelect={handleFileSelect} />
-            <UploadButton onUpload={handleFileUpload} onClick={closeModal}>
-              Upload
-            </UploadButton>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <UploadButton onUpload={handleFileUpload} onClick={closeModal}>
+                Upload
+              </UploadButton>
+            </div>
           </div>
         </Box>
       </Modal>

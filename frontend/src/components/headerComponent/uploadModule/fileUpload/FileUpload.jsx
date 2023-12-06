@@ -27,7 +27,8 @@ function FileUpload ({ onFileSelect }) {
         borderRadius: '10px',
         textAlign: 'center',
         backgroundColor: '#fff',
-        boxShadow: '1px 3px 5px 3px rgba(0,0,0,0.3)'
+        boxShadow: '1px 3px 5px 3px rgba(0,0,0,0.3)',
+        height: '24vh'
       }}
       onDragOver={onDragOver}
       onDrop={onDrop}
