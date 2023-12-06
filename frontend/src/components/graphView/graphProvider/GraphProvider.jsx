@@ -7,12 +7,16 @@ const GraphProvider = () => {
     nodes: [
       { id: 'A' },
       { id: 'B' },
-      { id: 'C' }
+      { id: 'C' },
+      { id: 'D' },
+      { id: 'E' },
+      { id: 'F' }
     ],
     links: [
       { source: 'A', target: 'B' },
-      { source: 'B', target: 'C' },
-      { source: 'C', target: 'A' }
+      { source: 'B', target: 'D' },
+      { source: 'C', target: 'E' },
+      { source: 'D', target: 'F' }
     ]
   }
 
