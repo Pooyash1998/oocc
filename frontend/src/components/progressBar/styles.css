@@ -1,0 +1,8 @@
+.progress-container {
+    background-color: grey;
+    height: 100vh; /* Set the height to cover the entire viewport */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
