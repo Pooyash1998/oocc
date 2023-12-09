@@ -6,19 +6,25 @@ function ProgressBar({ progressValue }) {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    let timeout;
-    if (progressValue >= 0 && progressValue <= 100) {
-      setProgress(progressValue);
-      setError(false);
-
-      if (progressValue < 100) {
-        timeout = setTimeout(() => {
-          setError(true);
-          setProgress(0);
-        }, 10000);
+    useEffect(() => {
+      let timeout;
+  
+      if (progressValue >= 0 && progressValue <= 100) {
+        setProgress(progressValue);
+        setError(false);
+  
+        if (progressValue < 100) {
+          timeout = setTimeout(() => {
+            setError(true);
+            setProgress(0);
+          }, 10000);
+        } else {
+          // If progress reaches 100%, close the dialog after a short delay
+          timeout = setTimeout(() => {
+            setOpen(false);
+          }, 1000); // Adjust the delay time as needed
+        }
       }
-    }
 
     // Open the dialog when progress starts
     setOpen(true);
@@ -33,7 +39,20 @@ function ProgressBar({ progressValue }) {
 
   if (error) {
     return (
-      <Alert severity="error">An error occurred. Please try again.</Alert>
+      <Alert sx={{
+        borderRadius: '10px',
+        fontSize: '15pt',
+        padding: '10px',
+        paddingLeft : '60px',
+        paddingRight : '60px',
+        position: 'fixed',
+        bottom: '10px',
+        margin: 'auto',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 9999,
+        }} severity="error">An error occurred. Please try again.</Alert>
     );
   }
 

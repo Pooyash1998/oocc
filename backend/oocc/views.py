@@ -5,8 +5,13 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from .models import EventLog
 from .serializers import EventLogSerializer
-from django.http import StreamingHttpResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+##ocpa## 
+from ocpa.algo.discovery.ocpn import algorithm as ocpn_discovery_factory
+from ocpa.objects.log.importer.ocel import factory as ocel_import_factory
+import traceback
+#####
+import time
 
 class EventLogViewSet(viewsets.ModelViewSet):
     queryset = EventLog.objects.all()
@@ -14,31 +19,45 @@ class EventLogViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['POST'])
     def process_file(self, request, *args, **kwargs):
-        # Get the id (pk) from URL parameters
-        eventlog_id = kwargs.get('pk')
+        try:
+            # Get the latest uploaded EventLog
+            event_log = EventLog.objects.latest('uploaded_at')
 
-        if eventlog_id:
-            file = request.FILES.get('file')
+            # Check if the file has already been processed
+            if event_log.processed_data:
+                return JsonResponse({'message': 'File already processed'}, status=200)
 
-            if file is None:
-                return Response({'error': 'File not provided'}, status=status.HTTP_400_BAD_REQUEST)
+            # Process the event log using OCPA
+            try:
+                print(f"file path is: ********* :{str(event_log.file.path)}")
+                ocel = ocel_import_factory.apply(file_path=event_log.file.path)
+                
+            except Exception as e:
+                # Log detailed error information
+                print(f"Error importing OCEl file: {str(e)}")
+                traceback.print_exc()  # Print the traceback for detailed error information
+                return JsonResponse({'error': 'Invalid OCEl file format'}, status=400)
 
+            try:
+                ocpn = ocpn_discovery_factory.apply(ocel)
+            except Exception as e:
+                # Log detailed error information
+                print(f"Error applying OCPA algorithm: {str(e)}")
+                traceback.print_exc()  # Print the traceback for detailed error information
+                return JsonResponse({'error': 'Error applying OCPA algorithm'}, status=500)
 
-            # Implement your file processing logic here
-            total_size = file.size
-            processed_size = 0
+            # Store the OCPA results in the database
+            event_log.processed_data = {'petri_net': ocpn.to_dict()}
+            event_log.save()
 
-            # Function to generate file chunks and progress
-            def file_processing_generator(file):
-                nonlocal processed_size
-                for chunk in file.chunks():
-                    processed_size += len(chunk)
-                    progress = int((processed_size / total_size) * 100)
-                    yield chunk, progress
+            return JsonResponse({'message': 'File processed successfully'}, status=200)
 
-            response = StreamingHttpResponse(file_processing_generator(file), content_type='application/octet-stream')
-            response['Content-Disposition'] = 'attachment; filename="{0}"'.format(file.name)
+        except EventLog.DoesNotExist:
+            return JsonResponse({'error': 'No EventLog found'}, status=404)
 
-            return response
-        else:
-            return Response({'error': 'File not provided'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            # Log detailed error information
+            print(f"Error processing file: {str(e)}")
+            traceback.print_exc()  # Print the traceback for detailed error information
+            return JsonResponse({'error': 'Internal Server Error'}, status=500)
+        

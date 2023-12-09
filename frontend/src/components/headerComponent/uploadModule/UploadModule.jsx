@@ -17,71 +17,48 @@ function UploadModule ({ closeModal, onUploadSuccess, onProcessSuccess, updatePr
   const handleFileUpload = async () => {
     closeModal()
 
-    if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      console.log('Uploading file:', file); // Debugging log
-
-      try {
-        // Upload the file
-        const uploadResponse = await fetch('http://localhost:8000/api/eventlogs/', {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Accept': 'application/json',
-            'Origin': 'http://localhost:3000',
-          },
-        });
-
-        console.log('Upload response:', uploadResponse); // Debugging log
-
-        if (uploadResponse.ok) {
-          const result = await uploadResponse.json();
-          console.log('Upload successful. Result:', result);
-
-          // Handle the progress bar based on the progress information received from the server
-          // Call the updateProgress function with the desired progress value
-          updateProgress(0);
-
-          const processResponse = await fetch(`http://localhost:8000/api/eventlogs/${result.id}/process_file/`, 
-          {
-            method: 'POST',
-          });
-
-          if (processResponse.ok) 
-          {
-            // Read chunks and progress updates from the stream
-            const reader = processResponse.body.getReader();
-            while (true) {
-            const { done, value } = await reader.read();
-            if (done) {
-              console.log('Processing completed.');
-              break;
-            }
-            const [, progress] = JSON.parse(value);
-            // Call the updateProgress function with the progress value
-            updateProgress(progress);
-          }
-            console.log('Processing successful.');
-            const processedData = processResponse.json().processed_data;
-            onProcessSuccess(processedData);
-          } else {
-            console.error('Processing failed.');
-          }
-
-          //onUploadSuccess(); // Assuming this is a callback for parent comp
-        } else {
-          console.error('Upload failed:', await uploadResponse.text());
-        }
-      } catch (error) {
-        console.error('Error during upload:', error);
-      }
-      setFile(null); // Resetting the file selection
-    } else {
+    if (!file) {
       console.log('No file selected');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const xhr = new XMLHttpRequest();
+
+      xhr.upload.addEventListener('progress', (event) => {
+        if (event.lengthComputable) {
+          const progress = (event.loaded / event.total) * 100;
+          updateProgress(progress);
+        }
+      });
+
+      xhr.open('POST', 'http://localhost:8000/api/eventlogs/');
+      xhr.setRequestHeader('Accept', 'application/json');
+
+      xhr.send(formData);
+
+      xhr.onload = async () => {
+        if (xhr.status === 201) {
+          try {
+            const result = JSON.parse(xhr.responseText);
+            console.log('Upload successful. Result:', result);
+          } catch (error) {
+            console.error('Error parsing JSON:', error);
+          }
+        } else {
+          console.error('Upload failed:', xhr.responseText);
+        }
+      };
+    } catch (error) {
+      console.error('Error during upload:', error);
+    } finally {
+      setFile(null); // Reset the file selection
     }
   };
+
 
   return (
     <div>
