@@ -5,9 +5,9 @@ import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
 import UploadButton from './uploadButton/UploadButton'
 
-function UploadModule ({ closeModal, onUploadSuccess, onProcessSuccess }) {
+function UploadModule ({ closeModal, onUploadSuccess, onProcessSuccess, updateProgress}) {
   const [file, setFile] = useState(null);  // State to keep track of the selected file
-
+   
   // Function to handle file selection
   const handleFileSelect = (selectedFile) => {
     setFile(selectedFile);
@@ -40,12 +40,29 @@ function UploadModule ({ closeModal, onUploadSuccess, onProcessSuccess }) {
           const result = await uploadResponse.json();
           console.log('Upload successful. Result:', result);
 
-          const processResponse = await fetch(`http://localhost:8000/api/eventlogs/${result.id}/process_file/`, {
+          // Handle the progress bar based on the progress information received from the server
+          // Call the updateProgress function with the desired progress value
+          updateProgress(0);
+
+          const processResponse = await fetch(`http://localhost:8000/api/eventlogs/${result.id}/process_file/`, 
+          {
             method: 'POST',
           });
 
           if (processResponse.ok) 
           {
+            // Read chunks and progress updates from the stream
+            const reader = processResponse.body.getReader();
+            while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+              console.log('Processing completed.');
+              break;
+            }
+            const [, progress] = JSON.parse(value);
+            // Call the updateProgress function with the progress value
+            updateProgress(progress);
+          }
             console.log('Processing successful.');
             const processedData = processResponse.json().processed_data;
             onProcessSuccess(processedData);
@@ -53,7 +70,7 @@ function UploadModule ({ closeModal, onUploadSuccess, onProcessSuccess }) {
             console.error('Processing failed.');
           }
 
-          onUploadSuccess(); // Assuming this is a callback
+          //onUploadSuccess(); // Assuming this is a callback for parent comp
         } else {
           console.error('Upload failed:', await uploadResponse.text());
         }
@@ -85,7 +102,7 @@ function UploadModule ({ closeModal, onUploadSuccess, onProcessSuccess }) {
             borderRadius: '10px',
             p: 4,
             width: '40%',
-            height: '30vh'
+            height: 'auto'
           }}
         >
           {/* Close Button */}
@@ -112,9 +129,10 @@ function UploadModule ({ closeModal, onUploadSuccess, onProcessSuccess }) {
                 alignItems: 'center',
               }}
             >
+              <div style={{ position: 'relative',marginTop : '1em' }}>
               <UploadButton onUpload={handleFileUpload} onClick={closeModal}>
                 Upload
-              </UploadButton>
+              </UploadButton></div>
             </div>
           </div>
         </Box>

@@ -27,4 +27,6 @@ router.register(r'eventlogs', EventLogViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-]
+    path('api/eventlogs/<int:pk>/process_file/', EventLogViewSet.as_view({'post': 'process_file'}), name='eventlog-process-file'),
+]   
+

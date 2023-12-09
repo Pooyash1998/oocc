@@ -15,6 +15,11 @@ function HeaderComponent ({ onMenuClick, isSidebarOpen }) {
   const [progress, setProgress] = useState(0);
   const [showProgressBar, setShowProgressBar] = useState(false)
 
+  // Function to update the progress
+  const updateProgress = (newProgress) => {
+    setProgress(newProgress);
+  };
+  
   const openModal = () => setModalOpen(true)
   const closeModal = () => {
     setModalOpen(false);
@@ -51,7 +56,7 @@ function HeaderComponent ({ onMenuClick, isSidebarOpen }) {
         <section
         className="header_importButton" style={{ position: 'absolute', left: 80 }}>
           <ImportButton openModal={openModal} />
-          {isModalOpen && <UploadModule closeModal={closeModal} />}
+          {isModalOpen && <UploadModule closeModal={closeModal} updateProgress={updateProgress} />}
         </section>
         {showProgressBar && <ProgressBar progressValue={progress} />}
         <Typography variant="h3" align="center" color="black" sx={{ flexGrow: 1 }}>
