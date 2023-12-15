@@ -19,10 +19,9 @@ const theme = createTheme({
 })
 
 function App () {
-  
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [updateGraphData, setUpdateGraphData] = useState(null);
-
+  
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen)
   }
@@ -45,7 +44,7 @@ function App () {
           <Grid container>
             {/* Header */}
             <Grid item xs={12}>
-              <HeaderComponent onMenuClick={toggleSidebar} isSidebarOpen={sidebarOpen} updateGraphData={updateGraphData} setUpdateGraphData={setUpdateGraphData}/>
+              <HeaderComponent onMenuClick={toggleSidebar} isSidebarOpen={sidebarOpen} setUpdateGraphData={setUpdateGraphData}/>
             </Grid>
 
             {/* GraphView in the center */}

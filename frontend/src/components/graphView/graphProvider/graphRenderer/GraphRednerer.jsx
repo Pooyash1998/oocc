@@ -1,15 +1,15 @@
 import React, { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 
-const GraphRenderer = ({ data , updateGraphData}) => {
+const GraphRenderer = ({ data }) => {
   const svgRef = useRef()
+  console.log('graphrend ok?', data);
 
   useEffect(() => {
-    console.log("wtf",updateGraphData)
+  
     d3.select(svgRef.current).selectAll('*').remove()
-
     if (!data) return
-
+    
     const width = 800
     const height = 600
 
@@ -49,6 +49,8 @@ const GraphRenderer = ({ data , updateGraphData}) => {
     simulation.force('link')
       .links(data.links)
   }, [data])
+
+
 
   return (
     <svg ref={svgRef}></svg>
