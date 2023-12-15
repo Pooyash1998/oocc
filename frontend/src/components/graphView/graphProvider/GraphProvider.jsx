@@ -2,8 +2,8 @@ import React from 'react'
 
 import GraphRenderer from './graphRenderer'
 
-const GraphProvider = () => {
-  const graphData = {
+const GraphProvider = ({ updateGraphData }) => {
+  const graphdata = {
     nodes: [
       { id: 'A' },
       { id: 'B' },
@@ -22,7 +22,7 @@ const GraphProvider = () => {
 
   return (
     <div>
-      <GraphRenderer data={graphData}/>
+      <GraphRenderer data={graphdata} updateGraphData={updateGraphData}/>
     </div>
   )
 }

@@ -5,12 +5,8 @@ from rest_framework.decorators import action
 from .models import EventLog
 from .serializers import EventLogSerializer
 from django.http import JsonResponse
-import sys
-import os
-# Add the path to the 'scripts' directory
-sys.path.append(os.path.join(os.path.dirname(__file__), 'scripts'))
-
-from oocc.scripts.ProcessDiscovery import validate_file
+from oocc.scripts.LogValidation import validate_file
+from oocc.scripts.RelExtract import get_o2o_Graph
 #####
 import time
 
@@ -34,19 +30,20 @@ class EventLogViewSet(viewsets.ModelViewSet):
                 return JsonResponse({'error': 'Invalid file format or content'}, status=400)
 
             try:
-                # Your processing logic here
-
-                return JsonResponse({'message': 'File processed successfully'}, status=200)
+                # Getting the o2o Relationships
+                graph_data = get_o2o_Graph(event_log.file.path)
+                 # Include the graph data in the JSON response
+                return JsonResponse({'message': 'File processed successfully', 'graph_data': graph_data}, status=200)
             except Exception as e:
                 # Log detailed error information
-                print(f"Error processing file: {str(e)}")
+                print(f"Error getting the Graph : {str(e)}")
                 return JsonResponse({'error': 'Internal Server Error'}, status=500)
-
+            
             # Process the event log using PM4Py
             #try:   
             #except Exception as e:
             # Log detailed error information
-
+            
         except Exception as e:
             # Log detailed error information
             print(f"Error processing file: {str(e)}")

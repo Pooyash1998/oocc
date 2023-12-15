@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 
-const GraphRenderer = ({ data }) => {
+const GraphRenderer = ({ data , updateGraphData}) => {
   const svgRef = useRef()
 
   useEffect(() => {
+    console.log("wtf",updateGraphData)
     d3.select(svgRef.current).selectAll('*').remove()
 
     if (!data) return

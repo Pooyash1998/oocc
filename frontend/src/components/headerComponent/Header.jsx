@@ -10,10 +10,15 @@ import MenuIcon from '@mui/icons-material/Menu'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 
-function HeaderComponent ({ onMenuClick, isSidebarOpen }) {
+function HeaderComponent ({ onMenuClick, isSidebarOpen, updateGraphData, setUpdateGraphData}) {
   const [isModalOpen, setModalOpen] = useState(false)
   const [progress, setProgress] = useState(0);
   const [showProgressBar, setShowProgressBar] = useState(false)
+
+  // Function to pass the updateGraphData function to UploadModule
+  const updateGraphDataFn = (updateGraphData) => {
+    setUpdateGraphData(updateGraphData);
+  };
 
   // Function to update the progress
   const updateProgress = (newProgress) => {
@@ -25,6 +30,8 @@ function HeaderComponent ({ onMenuClick, isSidebarOpen }) {
     setModalOpen(false);
     setShowProgressBar(true);
     setProgress(15);
+    // Pass the updateGraphData function to UploadModule
+    updateGraphDataFn(updateGraphData);
   }
 
   return (
@@ -56,7 +63,7 @@ function HeaderComponent ({ onMenuClick, isSidebarOpen }) {
         <section
         className="header_importButton" style={{ position: 'absolute', left: 80 }}>
           <ImportButton openModal={openModal} />
-          {isModalOpen && <UploadModule closeModal={closeModal} updateProgress={updateProgress} />}
+          {isModalOpen && <UploadModule closeModal={closeModal} updateProgress={updateProgress} updateGraphData={updateGraphDataFn}/>}
         </section>
         {showProgressBar && <ProgressBar progressValue={progress} />}
         <Typography variant="h3" align="center" color="black" sx={{ flexGrow: 1 }}>

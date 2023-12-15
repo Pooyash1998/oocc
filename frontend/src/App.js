@@ -19,12 +19,13 @@ const theme = createTheme({
 })
 
 function App () {
+  
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [updateGraphData, setUpdateGraphData] = useState(null);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen)
   }
-
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex' }}>
@@ -44,12 +45,12 @@ function App () {
           <Grid container>
             {/* Header */}
             <Grid item xs={12}>
-              <HeaderComponent onMenuClick={toggleSidebar} isSidebarOpen={sidebarOpen} />
+              <HeaderComponent onMenuClick={toggleSidebar} isSidebarOpen={sidebarOpen} updateGraphData={updateGraphData} setUpdateGraphData={setUpdateGraphData}/>
             </Grid>
 
             {/* GraphView in the center */}
             <Grid item xs={12} sm={12} md={10}>
-              <GraphView />
+             <GraphView updateGraphData={updateGraphData}/>
             </Grid>
           </Grid>
         </Box>
