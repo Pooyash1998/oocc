@@ -3,8 +3,7 @@ import * as d3 from 'd3'
 
 const GraphRenderer = ({ data }) => {
   const svgRef = useRef()
-  console.log('graphrend ok?', data);
-
+  
   useEffect(() => {
   
     d3.select(svgRef.current).selectAll('*').remove()

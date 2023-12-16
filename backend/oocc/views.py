@@ -32,8 +32,11 @@ class EventLogViewSet(viewsets.ModelViewSet):
             try:
                 # Getting the o2o Relationships
                 graph_data = get_o2o_Graph(event_log.file.path)
-                 # Include the graph data in the JSON response
-                return JsonResponse({'message': 'File processed successfully', 'graph_data': graph_data}, status=200)
+
+                # Include the graph data in the JSON response
+                response_data = {'message': 'File processed successfully', 'graph_data': graph_data}
+
+                return JsonResponse(response_data, status=200)
             except Exception as e:
                 # Log detailed error information
                 print(f"Error getting the Graph : {str(e)}")
@@ -48,4 +51,3 @@ class EventLogViewSet(viewsets.ModelViewSet):
             # Log detailed error information
             print(f"Error processing file: {str(e)}")
             return JsonResponse({'error': 'Internal Server Error'}, status=500)
-        
