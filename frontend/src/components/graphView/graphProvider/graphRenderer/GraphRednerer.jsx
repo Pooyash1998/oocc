@@ -15,13 +15,14 @@ const GraphRenderer = ({ data }) => {
     d3.select(svgRef.current).selectAll('*').remove();
     if (!data) return;
 
-    const width = d3.select(svgRef.current).node().getBoundingClientRect().width;
+    const screenWidth = window.innerWidth; // Get the width of the screen
+    const width = screenWidth * 0.95; // Set the width to 80% of the screen width
     const height = 600;
-
+    
     const svg = d3.select(svgRef.current)
       .attr('width', width)
       .attr('height', height)
-      .style('background-color', '#f0f0f0');
+      .style('background-color', '#f0f0f0')
 
     const simulation = d3.forceSimulation()
       .force('link', d3.forceLink().id(d => d.id))

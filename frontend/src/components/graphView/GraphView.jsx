@@ -1,12 +1,14 @@
 import React from 'react';
 import GraphProvider from './graphProvider';
 
-function GraphView({updateGraphData}) {
+function GraphView({ updateGraphData }) {
   return (
-    <section className="graphView" >
+    <section className="graphView" style={{
+      marginLeft : '20px',
+      marginRight: '20px'
+      }}>
       {/* Pass the initialGraphData and updateGraphData to GraphProvider */}
-      <GraphProvider updateGraphData={updateGraphData}/>
-      
+      <GraphProvider updateGraphData={updateGraphData} />
     </section>
   );
 }
