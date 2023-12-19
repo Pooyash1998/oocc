@@ -54,33 +54,17 @@ const GraphRenderer = ({ data }) => {
     svg.call(tip);
 
     simulation.nodes(data.nodes)
-      .on('tick', () => {
-        links
-          .attr('x1', d => d.source.x)
-          .attr('y1', d => d.source.y)
-          .attr('x2', d => d.target.x)
-          .attr('y2', d => d.target.y);
-
-        const edgeLength = 10; // Adjust this value to make edges longer
-        links.each(function () {
-          const line = d3.select(this);
-          const dx = line.attr('x2') - line.attr('x1');
-          const dy = line.attr('y2') - line.attr('y1');
-          const scale = Math.sqrt(dx * dx + dy * dy);
-          const newLength = edgeLength * (scale / 2);
-
-          // Calculate new x and y for the target point
-          const newX2 = parseFloat(line.attr('x1')) + (dx / scale) * newLength;
-          const newY2 = parseFloat(line.attr('y1')) + (dy / scale) * newLength;
-
-          line.attr('x2', newX2);
-          line.attr('y2', newY2);
-        });
-
-        nodes
-          .attr('cx', d => d.x)
-          .attr('cy', d => d.y);
-      });
+    .on('tick', () => {
+      links
+        .attr('x1', d => d.source.x)
+        .attr('y1', d => d.source.y)
+        .attr('x2', d => d.target.x)
+        .attr('y2', d => d.target.y);
+  
+      nodes
+        .attr('cx', d => d.x)
+        .attr('cy', d => d.y);
+    });
 
     simulation.force('link')
       .links(data.links);
