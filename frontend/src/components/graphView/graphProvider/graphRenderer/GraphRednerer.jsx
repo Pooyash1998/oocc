@@ -6,7 +6,7 @@ import d3Tip from 'd3-tip';
 const tip = d3Tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
-  .html(d => `Node ID: ${d.id}`); // Update this line
+  .html(d => `Node ID: ${d.id}`);
 
 const GraphRenderer = ({ data }) => {
   const svgRef = useRef();
@@ -18,23 +18,26 @@ const GraphRenderer = ({ data }) => {
     const screenWidth = window.innerWidth; // Get the width of the screen
     const width = screenWidth * 0.95; // Set the width to 80% of the screen width
     const height = 600;
-    
+
     const svg = d3.select(svgRef.current)
       .attr('width', width)
       .attr('height', height)
-      .style('background-color', '#f0f0f0')
+      .style('background-color', '#ffffff');
 
     const simulation = d3.forceSimulation()
       .force('link', d3.forceLink().id(d => d.id))
       .force('charge', d3.forceManyBody())
       .force('center', d3.forceCenter(width / 2, height / 2));
 
+    // Create a color scale
+    const color = d3.scaleOrdinal().range(['#468499', 'orange']);
+
     // Add nodes with styling
     const nodes = svg.selectAll('circle')
       .data(data.nodes)
       .enter().append('circle')
       .attr('r', 10)
-      .attr('fill', d => (d.isSource ? 'blue' : 'orange'))
+      .attr('fill', d => color(d.id))
       .call(drag(simulation))
       .on('mouseover', function (event, d) {
         tip.show(d, this);
@@ -55,24 +58,24 @@ const GraphRenderer = ({ data }) => {
     svg.call(tip);
 
     simulation.nodes(data.nodes)
-    .on('tick', () => {
-      links
-        .attr('x1', d => d.source.x)
-        .attr('y1', d => d.source.y)
-        .attr('x2', d => d.target.x)
-        .attr('y2', d => d.target.y);
-  
-      nodes
-        .attr('cx', d => d.x)
-        .attr('cy', d => d.y);
-    });
+      .on('tick', () => {
+        links
+          .attr('x1', d => d.source.x)
+          .attr('y1', d => d.source.y)
+          .attr('x2', d => d.target.x)
+          .attr('y2', d => d.target.y);
+
+        nodes
+          .attr('cx', d => d.x)
+          .attr('cy', d => d.y);
+      });
 
     simulation.force('link')
       .links(data.links);
   }, [data]);
 
   return (
-    <svg ref={svgRef} style={{ border: "2px solid gold" }}></svg>
+    <svg ref={svgRef}></svg>
   );
 };
 
