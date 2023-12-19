@@ -6,6 +6,7 @@ function GraphView({updateGraphData}) {
     <section className="graphView" >
       {/* Pass the initialGraphData and updateGraphData to GraphProvider */}
       <GraphProvider updateGraphData={updateGraphData}/>
+      
     </section>
   );
 }

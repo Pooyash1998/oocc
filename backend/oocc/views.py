@@ -5,8 +5,7 @@ from rest_framework.decorators import action
 from .models import EventLog
 from .serializers import EventLogSerializer
 from django.http import JsonResponse
-from oocc.scripts.LogValidation import validate_file
-from oocc.scripts.RelExtract import get_o2o_Graph
+from oocc.scripts.o2o_graph import get_o2o_Graph
 #####
 import time
 
@@ -23,12 +22,7 @@ class EventLogViewSet(viewsets.ModelViewSet):
             # Check if the file has already been processed
             if event_log.processed_data:
                 return JsonResponse({'message': 'File already processed'}, status=200)
-             # Validate the uploaded file (modify this based on your validation logic)
-            is_valid_file = validate_file(event_log.file.path)
-
-            if not is_valid_file:
-                return JsonResponse({'error': 'Invalid file format or content'}, status=400)
-
+            
             try:
                 # Getting the o2o Relationships
                 graph_data = get_o2o_Graph(event_log.file.path)
