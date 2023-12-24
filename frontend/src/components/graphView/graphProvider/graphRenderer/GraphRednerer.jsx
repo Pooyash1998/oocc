@@ -5,7 +5,7 @@ import d3Tip from 'd3-tip';
 const tip = d3Tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
-  .html(d => `Object's Name: ${d.name}`);
+  tip.html(d => `Object's Name: ${d.id}<br>Type: ${d.type}`);
   // Apply custom styling
   tip.style('padding', '12px')
     .style('background-color', 'rgba(248, 249, 250, 0.75)') // Background color
@@ -17,7 +17,7 @@ const tip = d3Tip()
 const linkTip = d3Tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
-  .html(d => `${d.name} : ${d.source.name} to ${d.target.name}`);
+  .html(d => `${d.name} : ${d.source.id} to ${d.target.id}`);
 
   linkTip.style('padding', '12px')
   .style('background-color', 'rgba(248, 249, 250, 0.75)')
@@ -85,7 +85,7 @@ const GraphRenderer = ({ data }) => {
       .style('background-color', '#ffffff');
 
     const simulation = d3.forceSimulation()
-      .force('link', d3.forceLink().id(d => d.id).distance(100))
+      .force('link', d3.forceLink().id(d => d.id).distance(120))
       .force('charge', d3.forceManyBody())
       .force('center', d3.forceCenter(width / 2, height / 2));
 
@@ -107,7 +107,7 @@ const GraphRenderer = ({ data }) => {
         d3.select(this).attr('stroke-width', 2);
       });
 
-      
+
       const nodes = svg.selectAll('circle')
       .data(data.nodes)
       .enter().append('circle')

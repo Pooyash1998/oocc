@@ -6,6 +6,7 @@ from .models import EventLog
 from .serializers import EventLogSerializer
 from django.http import JsonResponse
 from oocc.scripts.o2o_graph import get_o2o_Graph
+from oocc.scripts.implicit_graph import get_implicit_Graph
 #####
 import time
 
@@ -24,11 +25,14 @@ class EventLogViewSet(viewsets.ModelViewSet):
                 return JsonResponse({'message': 'File already processed'}, status=200)
             
             try:
-                # Getting the o2o Relationships
-                graph_data = get_o2o_Graph(event_log.file.path)
+                # Getting the o2o Relationships (explicit)
+                exp_graph_data = get_o2o_Graph(event_log.file.path)
+                # get the object_event Relationships (implicit)
+                imp_graph_data = get_implicit_Graph(event_log.file.path)
 
                 # Include the graph data in the JSON response
-                response_data = {'message': 'File processed successfully', 'graph_data': graph_data}
+                response_data = {'message': 'File processed successfully', 'imp_graph_data': imp_graph_data,
+                                                                        'exp_graph_data':exp_graph_data}
 
                 return JsonResponse(response_data, status=200)
             except Exception as e:
