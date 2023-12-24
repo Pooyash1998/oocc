@@ -1,5 +1,4 @@
 from ocpa.objects.log.importer.ocel2.sqlite import factory as ocel_import_factory
-from ocpa.algo.ocel2_use_cases.o2o_qualifier_conformance import check_o2o_qualifier_conformance
 import networkx as nx
 import os
 
@@ -16,7 +15,7 @@ def get_o2o_Graph(file_path):
     else:
         raise ValueError(f"Unsupported file type: {file_type}")
     
-    # Extract object-to-object relationships and create a directed graph
+    # Extract object-to-object relationships and create a directed graph(these are explicit)
     graph = ocel.o2o_graph.graph
     return process_graph(graph)
 

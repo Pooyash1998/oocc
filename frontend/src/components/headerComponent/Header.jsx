@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import ImportButton from './importButton'
 import UploadModule from './uploadModule'
 import ProgressBar from '../progressBar'
-
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
@@ -10,27 +9,19 @@ import MenuIcon from '@mui/icons-material/Menu'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 
-function HeaderComponent ({ onMenuClick, isSidebarOpen, setUpdateGraphData}) {
-  const [isModalOpen, setModalOpen] = useState(false)
-  const [progress, setProgress] = useState(0);
-  const [showProgressBar, setShowProgressBar] = useState(false)
-  
+function HeaderComponent ({ onMenuClick, isSidebarOpen, setUpdateGraphData, triggerError}) {
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [showProgressBar, setShowProgressBar] = useState(false);
+
   // Function to pass the updateGraphData function to UploadModule
   const updateGraphDataFn = (updateGraphData) => {
     setUpdateGraphData(updateGraphData);
   };
-
-  // Function to update the progress
-  const updateProgress = (newProgress) => {
-    setProgress(newProgress);
-  };
   
-  const openModal = () => setModalOpen(true)
+  const openModal = () => setModalOpen(true);
   const closeModal = () => {
     setModalOpen(false);
-    setShowProgressBar(true);
-    setProgress(15);
-  }
+  };
 
   return (
     <AppBar
@@ -61,10 +52,15 @@ function HeaderComponent ({ onMenuClick, isSidebarOpen, setUpdateGraphData}) {
         <section
         className="header_importButton" style={{ position: 'absolute', left: 80 }}>
           <ImportButton openModal={openModal} />
-          {isModalOpen && <UploadModule closeModal={closeModal} updateProgress={updateProgress} updateGraphData={updateGraphDataFn}/>}
+          {isModalOpen && <UploadModule closeModal={closeModal} showProgressBar={setShowProgressBar} updateGraphData={updateGraphDataFn}
+                                        triggerError={triggerError}/>}
         </section>
-        {showProgressBar && <ProgressBar progressValue={progress} />}
-        <Typography variant="h3" align="center" color="black" sx={{ flexGrow: 1 }}>
+        {showProgressBar && <ProgressBar showProgressBar={setShowProgressBar} triggerError={triggerError}/>}
+        <Typography variant="h3" align="center" color="#333" 
+        sx={{
+          flexGrow: 1,
+          textShadow: '2px 2px 4px rgba(0, 0, 0, 0.4)', // Add a subtle shadow
+        }}>
           MIRROR
         </Typography>
       </Toolbar>

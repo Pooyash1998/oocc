@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import HeaderComponent from './components/headerComponent'
 import GraphView from './components/graphView'
 import Sidebar from './components/sidebar'
+import ErrorAlert from './components/errorAlert'
 
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
@@ -19,9 +20,16 @@ const theme = createTheme({
 })
 
 function App () {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [updateGraphData, setUpdateGraphData] = useState(null);
+  const [error, setError] = useState(null);
   
+  const handleErrorClose = () => {
+    setError(null);
+  };
+  const triggerError = (message) => {
+    setError(message);
+  };
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen)
   }
@@ -44,13 +52,16 @@ function App () {
           <Grid container>
             {/* Header */}
             <Grid item xs={12}>
-              <HeaderComponent onMenuClick={toggleSidebar} isSidebarOpen={sidebarOpen} setUpdateGraphData={setUpdateGraphData}/>
+              <HeaderComponent onMenuClick={toggleSidebar} isSidebarOpen={sidebarOpen} setUpdateGraphData={setUpdateGraphData}
+                                triggerError={triggerError}/>
             </Grid>
 
             {/* GraphView in the center */}
             <Grid item xs={12} sm={12} md={10}>
              <GraphView updateGraphData={updateGraphData}/>
             </Grid>
+            {/* Error alert component */}
+           <ErrorAlert error={error} onClose={handleErrorClose}/>
           </Grid>
         </Box>
       </Box>
