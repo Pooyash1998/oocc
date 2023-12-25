@@ -120,7 +120,7 @@ const GraphRenderer = ({ data }) => {
       .enter().append('line')
       .attr('stroke-width', 3)
       .style('stroke', d => {
-        if (d.origin === 1) return 'green';   // Origin 1: Green
+        if (d.origin === 1) return '#00ff00';   // Origin 1: Green
         if (d.origin === 1) return 'red';     // Origin 0: Red
         return '#8F8F8F';                    // Origin 2: Default color
       })

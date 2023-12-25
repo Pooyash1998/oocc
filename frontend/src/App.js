@@ -9,6 +9,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 
+import explicitIcon from './assets/explicit.svg';
+import implicitIcon from './assets/implicit.svg';
+import notInLogIcon from './assets/notInLog.svg';
+import notInO2OIcon from './assets/notInO2O.svg';
+
 const theme = createTheme({
   typography: {
     fontFamily: [
@@ -18,7 +23,12 @@ const theme = createTheme({
     ].join(',')
   }
 })
-
+const legendItems = [
+  { icon: explicitIcon, description: 'Only Explicit' },
+  { icon: implicitIcon, description: 'Only Implicit' },
+  { icon: notInLogIcon, description: 'Object not in log (explicit)' },
+  { icon: notInO2OIcon, description: 'Object not in o2o (implicit)' },
+];
 function App () {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [updateGraphData, setUpdateGraphData] = useState(null);
@@ -60,6 +70,28 @@ function App () {
             <Grid item xs={12} sm={12} md={10}>
              <GraphView updateGraphData={updateGraphData}/>
             </Grid>
+             {/* Legend */}
+             {updateGraphData && (
+              <Box 
+             sx={{position: 'fixed',
+                      bottom: 0,
+                      right: 0,
+                      margin: '10px',
+                      padding: '8px',
+                      backgroundColor: 'white',
+                      border: '1px solid #ddd',
+                      borderRadius: '8px',
+                      textAlign: 'center',
+                      fontFamily: 'Roboto',
+                      boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',}}> <strong>Legend</strong> 
+                      <div>
+                        {legendItems.map((item, index) => (
+                        <div key={index} style={{ display: 'flex', alignItems: 'center', marginTop: index === 2 ? '20px' : '8px', }}>
+                        <img src={item.icon} alt={`icon-${index}`} style={{ width: '35px', height: '35px', marginRight: '5px' }} />
+                        <div>{item.description}</div>
+                      </div>))}
+                      </div>
+                      </Box>)}
             {/* Error alert component */}
            <ErrorAlert error={error} onClose={handleErrorClose}/>
           </Grid>
