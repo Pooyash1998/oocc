@@ -49,7 +49,7 @@ def process_graph(graph):
 
     # Create D3.js-compatible data
     graph_dict = {
-       'nodes': [{'id': node[1], 'type': node[0]} for node in G.nodes()],
-       'links': [{'source': edge[0][1], 'target': edge[1][1], 'name': edge[2]['event_id']} for edge in G.edges(data=True)]
+       'nodes': [{'id': node[1], 'type': node[0], 'origin': 1 } for node in G.nodes()],
+       'links': [{'source': edge[0][1], 'target': edge[1][1], 'name': edge[2]['event_id'], 'origin': 1 } for edge in G.edges(data=True)]
     }
     return graph_dict

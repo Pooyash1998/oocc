@@ -11,7 +11,11 @@ function ProgressBar({triggerError, showProgressBar}) {
       timeout = setTimeout(() => {
         triggerError("Processing time out!")
         showProgressBar(false);
-      }, 1000);
+        // Reload the page after a delay (e.g., 3 seconds)
+        setTimeout(() => {
+          window.location.reload();
+        }, 2500);
+      }, 10000);
       
       return () => clearTimeout(timeout);
   }, [showProgressBar, triggerError]);

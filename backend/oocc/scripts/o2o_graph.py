@@ -35,8 +35,8 @@ def process_graph(graph, object_type_mapping):
     G = nx.DiGraph()
     # Add nodes and edges to the graph
     for edge in graph.edges(data=True):
-        source_node, target_node, qualifier = edge
-        G.add_edge(source_node, target_node, qualifier=qualifier['qualifier'])
+        source_node, target_node, attributes = edge
+        G.add_edge(source_node, target_node, qualifier=attributes['qualifier'])
 
     # Add the 'type' property for each node based on object_type_mapping
     for node in G.nodes():
@@ -49,8 +49,8 @@ def process_graph(graph, object_type_mapping):
     
     # Convert the graph to a dictionary that can be used in D3.js
     graph_dict = {
-        'nodes': [{'id': node, 'type': G.nodes[node]['type']} for node in G.nodes()],
-        'links': [{'source': edge[0], 'target': edge[1], 'name': edge[2]['qualifier']} for edge in G.edges(data=True)]
+        'nodes': [{'id': node, 'type': G.nodes[node]['type'], 'origin': 0 } for node in G.nodes()],
+        'links': [{'source': edge[0], 'target': edge[1], 'name': edge[2]['qualifier'], 'origin': 0 } for edge in G.edges(data=True)]
     }
 
 

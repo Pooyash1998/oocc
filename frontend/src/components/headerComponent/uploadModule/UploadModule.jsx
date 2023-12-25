@@ -56,7 +56,7 @@ function UploadModule ({ closeModal, onUploadSuccess, showProgressBar, updateGra
                 const processResult = await processResponse.json();
 
                 // Update the graph data using the function passed from the parent
-                updateGraphData(processResult.imp_graph_data); 
+                updateGraphData(processResult); 
                 showProgressBar(false);
                 console.log('File processing successful:', processResult);
               } else {

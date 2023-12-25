@@ -5,7 +5,7 @@ import d3Tip from 'd3-tip';
 const tip = d3Tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
-  tip.html(d => `Object's Name: ${d.id}<br>Type: ${d.type}`);
+  tip.html(d => `Object-ID: ${d.id}<br>Type: ${d.type}`);
   // Apply custom styling
   tip.style('padding', '12px')
     .style('background-color', 'rgba(248, 249, 250, 0.75)') // Background color
@@ -25,6 +25,30 @@ const linkTip = d3Tip()
   .style('border-radius', '8px')
   .style('box-shadow', '0 0 10px rgba(0, 0, 0, 0.2)')
   .style('color', '#212529');  
+
+  function drag(simulation) {
+    function dragStarted(event) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      event.subject.fx = event.subject.x;
+      event.subject.fy = event.subject.y;
+    }
+  
+    function dragged(event) {
+      event.subject.fx = event.x;
+      event.subject.fy = event.y;
+    }
+  
+    function dragEnded(event) {
+      if (!event.active) simulation.alphaTarget(0);
+      event.subject.fx = null;
+      event.subject.fy = null;
+    }
+  
+    return d3.drag()
+      .on('start', dragStarted)
+      .on('drag', dragged)
+      .on('end', dragEnded);
+  }
   
 const GraphRenderer = ({ data }) => {
   const screenWidth = window.innerWidth;
@@ -163,26 +187,4 @@ const GraphRenderer = ({ data }) => {
 
 export default GraphRenderer;
 
-function drag(simulation) {
-  function dragStarted(event) {
-    if (!event.active) simulation.alphaTarget(0.3).restart();
-    event.subject.fx = event.subject.x;
-    event.subject.fy = event.subject.y;
-  }
 
-  function dragged(event) {
-    event.subject.fx = event.x;
-    event.subject.fy = event.y;
-  }
-
-  function dragEnded(event) {
-    if (!event.active) simulation.alphaTarget(0);
-    event.subject.fx = null;
-    event.subject.fy = null;
-  }
-
-  return d3.drag()
-    .on('start', dragStarted)
-    .on('drag', dragged)
-    .on('end', dragEnded);
-}
