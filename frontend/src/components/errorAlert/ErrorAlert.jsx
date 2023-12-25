@@ -6,7 +6,7 @@ function ErrorAlert({ error, onClose }) {
 
   useEffect(() => {
     setIsVisible(!!error);
-
+    
     const timeoutId = setTimeout(() => {
       setIsVisible(false);
       onClose(); // Call the provided onClose function after the timeout

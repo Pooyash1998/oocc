@@ -32,7 +32,6 @@ const GraphProvider = ({ updateGraphData }) => {
 
     if (correspondingImpEdge) {
       correspondingImpEdge.origin = 2; expEdge.origin = 2;
-      //combinedEdges.push(correspondingImpEdge);
     } 
   });
   // Copy explicit edges to combinedEdges

@@ -49,7 +49,7 @@ const linkTip = d3Tip()
       .on('drag', dragged)
       .on('end', dragEnded);
   }
-  
+
 const GraphRenderer = ({ data }) => {
   const screenWidth = window.innerWidth;
   const width = screenWidth * 0.95;
@@ -118,17 +118,21 @@ const GraphRenderer = ({ data }) => {
     const links = svg.selectAll('line')
       .data(data.links)
       .enter().append('line')
-      .attr('stroke', '#8F8F8F')
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 3)
+      .style('stroke', d => {
+        if (d.origin === 1) return 'green';   // Origin 1: Green
+        if (d.origin === 1) return 'red';     // Origin 0: Red
+        return '#8F8F8F';                    // Origin 2: Default color
+      })
       .on('mouseover', function (event, d) {
         linkTip.show(d, this);
         // Additional styling if needed
-        d3.select(this).attr('stroke-width', 4);
+        d3.select(this).attr('stroke-width', 5);
       })
       .on('mouseout', function (event, d) {
         linkTip.hide(d, this);
         // Reset styling to original width
-        d3.select(this).attr('stroke-width', 2);
+        d3.select(this).attr('stroke-width', 3);
       });
 
 
@@ -138,7 +142,8 @@ const GraphRenderer = ({ data }) => {
       .attr('r', 18)
       .attr('fill','white')
       .attr('stroke', d => color(d.id)) // Set the stroke color based on your data
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 3)
+      .style('stroke-dasharray', d => (d.origin === 1) ? '3,3' : (d.origin === 0) ? '15,10' : 'none') // Dashed stroke for origin 1, Dashed stroke for origin 0
       .call(drag(simulation))
       .on('mouseover', function (event, d) {
         tip.show(d, this);

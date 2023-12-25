@@ -60,17 +60,21 @@ function UploadModule ({ closeModal, onUploadSuccess, showProgressBar, updateGra
                 showProgressBar(false);
                 console.log('File processing successful:', processResult);
               } else {
+                showProgressBar(false);
                 triggerError("An Error occured during file processing!");
                 console.error('File processing failed:', processResponse.statusText);
               }
             } catch (processError) {
+              showProgressBar(false);
               triggerError("An Error occured during file processing!");
               console.error('Error during file processing:', processError);
             }
           } catch (error) {
+            showProgressBar(false);
             console.error('Error parsing JSON:', error);
           }
         } else {
+          showProgressBar(false);
           console.error('Upload failed:', xhr.responseText);
           triggerError("An Error occured during file Upload!");
         }
