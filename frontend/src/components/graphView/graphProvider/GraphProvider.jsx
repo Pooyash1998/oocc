@@ -85,9 +85,9 @@ const GraphProvider = ({ GraphData, UpdateInfo}) => {
     to the total number of actual implicit relationships.
 
     */
-    const truePositives = impFilteredGraphData.links.filter(link => link.origin === 2).length;
-    const falsePositives = impFilteredGraphData.links.filter(link => link.origin === 1).length;
-    const falseNegatives = expFilteredGraphData.links.filter(link => link.origin === 0).length;
+    const truePositives = mergedGraphData.links.filter(link => link.origin === 2).length;
+    const falsePositives = mergedGraphData.links.filter(link => link.origin === 1).length;
+    const falseNegatives = mergedGraphData.links.filter(link => link.origin === 0).length;
 
     const precision = truePositives / (truePositives + falsePositives);
     const recall = truePositives / (truePositives + falseNegatives);
