@@ -76,7 +76,26 @@ const GraphProvider = ({ GraphData, UpdateInfo}) => {
 
     return mergedGraphData;
   };
-  
+  const calculateMetrics = () => {
+    // Count true positives, false positives, and false negatives based on "origin" property
+    /*
+    Precision is the ratio of correctly identified implicit relationships (true positives) 
+    to the total number of identified implicit relationships.
+    Recall is the ratio of correctly identified implicit relationships (true positives) 
+    to the total number of actual implicit relationships.
+
+    */
+    const truePositives = impFilteredGraphData.links.filter(link => link.origin === 2).length;
+    const falsePositives = impFilteredGraphData.links.filter(link => link.origin === 1).length;
+    const falseNegatives = expFilteredGraphData.links.filter(link => link.origin === 0).length;
+
+    const precision = truePositives / (truePositives + falsePositives);
+    const recall = truePositives / (truePositives + falseNegatives);
+
+    console.log('Precision:', precision);
+    console.log('Recall:', recall);
+  };
+  calculateMetrics();
   // Update the graph data on when updateBtn in sidebar changes
   useEffect(() => {
     setFinalGraphData(updateGraph());
