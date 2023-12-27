@@ -31,9 +31,22 @@ const legendItems = [
 ];
 function App () {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [updateGraphData, setUpdateGraphData] = useState(null);
+  const [fetchGraphData, setfetchGraphData] = useState(null);
   const [error, setError] = useState(null);
-  
+  const [expChecked, setExpChecked] = useState(true);
+  const [impChecked, setImpChecked] = useState(true);
+  const [UpdateInfo, setUpdateInfo] = useState({
+    exp: true,
+    imp: true,
+  });
+
+  const updateBtn = () => {
+    setUpdateInfo({
+      exp: expChecked, 
+      imp: impChecked,
+    });
+  };
+
   const handleErrorClose = () => {
     setError(null);
   };
@@ -45,33 +58,33 @@ function App () {
   }
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex'}}>
         {/* Sidebar */}
         <Box
           sx={{
-            width: sidebarOpen ? 40 : 0, // Adjust width for open/close
+            width: sidebarOpen ? 0 : 0, // Adjust width for open/close
             transition: 'width 0.5s ease',
-            overflowX: 'hidden'
+            overflowX: 'hidden',
           }}
         >
-          <Sidebar open={sidebarOpen} onClose={toggleSidebar} />
+          <Sidebar open={sidebarOpen} onClose={toggleSidebar} updateBtn={updateBtn} expChecked={expChecked} impChecked={impChecked} setExpChecked={setExpChecked} setImpChecked={setImpChecked}/>
         </Box>
 
         {/* Main content */}
-        <Box sx={{ flexGrow: 1, transition: 'margin 0.3s ease', marginLeft: sidebarOpen ? 40 : 0 }}>
+        <Box sx={{ flexGrow: 1, transition: 'margin 0.3s ease', marginLeft: sidebarOpen ? 38 : 0 }}>
           <Grid container>
             {/* Header */}
             <Grid item xs={12}>
-              <HeaderComponent onMenuClick={toggleSidebar} isSidebarOpen={sidebarOpen} setUpdateGraphData={setUpdateGraphData}
+              <HeaderComponent onMenuClick={toggleSidebar} isSidebarOpen={sidebarOpen} setfetchGraphData={setfetchGraphData}
                                 triggerError={triggerError}/>
             </Grid>
 
             {/* GraphView in the center */}
             <Grid item xs={12} sm={12} md={10}>
-             <GraphView updateGraphData={updateGraphData}/>
+             <GraphView sidebarOpen={sidebarOpen} GraphData={fetchGraphData} UpdateInfo={UpdateInfo}/>
             </Grid>
              {/* Legend */}
-             {updateGraphData && (
+             {fetchGraphData && (
               <Box 
              sx={{position: 'fixed',
                       bottom: 0,

@@ -1,12 +1,11 @@
-import React from 'react'
-
+import {React, useEffect, useState} from 'react'
 import GraphRenderer from './graphRenderer'
 
-const GraphProvider = ({ updateGraphData }) => {
+const mergeGraphData = (GraphData) => {
   // Access imp_graph_data and exp_graph_data from Backend GraphData
-  const impGraphData = updateGraphData.imp_graph_data;
-  const expGraphData = updateGraphData.exp_graph_data;
-
+  const impGraphData = GraphData.imp_graph_data;
+  const expGraphData = GraphData.exp_graph_data;
+  
   // Iterate over explicit nodes
   expGraphData.nodes.forEach(expNode => {
     // Find the corresponding implicit node by ID
@@ -45,10 +44,47 @@ const GraphProvider = ({ updateGraphData }) => {
     nodes: combinedNodes,
     links: combinedEdges,
   };
+  return mergedGraphData;
+};
 
+const GraphProvider = ({ GraphData, UpdateInfo}) => {
+  
+  const mergedGraphData = mergeGraphData(GraphData);
+  const expFilteredGraphData = {...mergedGraphData};
+  const impFilteredGraphData = {...mergedGraphData};
+  const allFilteredGraphData = {...mergedGraphData};
+  expFilteredGraphData.nodes = expFilteredGraphData.nodes.filter(node => node.origin === 0 || node.origin === 2 );
+  expFilteredGraphData.links = expFilteredGraphData.links.filter(link => link.origin === 0 || link.origin === 2 );
+  impFilteredGraphData.nodes = impFilteredGraphData.nodes.filter(node => node.origin === 1 || node.origin === 2 );
+  impFilteredGraphData.links = impFilteredGraphData.links.filter(link => link.origin === 1 || link.origin === 2 );
+  allFilteredGraphData.nodes = allFilteredGraphData.nodes.filter(node => node.origin === 2 );
+  allFilteredGraphData.links = allFilteredGraphData.links.filter(link => link.origin === 2 );
+
+  const [finalGraphData, setFinalGraphData] = useState(mergedGraphData);
+
+  const updateGraph = () => {
+    if (UpdateInfo.exp && !UpdateInfo.imp) {
+      // Only exp is true, filter out nodes and edges with origin !== 0
+      return expFilteredGraphData;
+    } else if (!UpdateInfo.exp && UpdateInfo.imp) {
+      // Only imp is true, filter out nodes and edges with origin !== 1
+      return impFilteredGraphData;
+    } else if (!UpdateInfo.exp && !UpdateInfo.imp) {
+      // both are set to false so show only nodes and edges with origin 2
+      return allFilteredGraphData;
+    }
+
+    return mergedGraphData;
+  };
+  
+  // Update the graph data on when updateBtn in sidebar changes
+  useEffect(() => {
+    setFinalGraphData(updateGraph());
+  }, [UpdateInfo.exp, UpdateInfo.imp]);
+  
   return (
     <div>
-      <GraphRenderer data={mergedGraphData}/>
+      <GraphRenderer data={finalGraphData}/>
     </div>
   )
 }

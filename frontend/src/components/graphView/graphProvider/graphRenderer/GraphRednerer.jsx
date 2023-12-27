@@ -50,10 +50,11 @@ const linkTip = d3Tip()
       .on('end', dragEnded);
   }
 
-const GraphRenderer = ({ data }) => {
+const GraphRenderer = ({ data, expChecked}) => {
   const screenWidth = window.innerWidth;
-  const width = screenWidth * 0.95;
-  const height = 600;
+  const screenHeight = window.innerHeight;
+  const width = '100%' ;//screenWidth * 0.95;
+  const height = screenHeight*0.85;//600;
 
   const svgRef = useRef();
   const zoomRef = useRef(d3.zoom().scaleExtent([0.25, 10]));
@@ -111,7 +112,7 @@ const GraphRenderer = ({ data }) => {
     const simulation = d3.forceSimulation()
       .force('link', d3.forceLink().id(d => d.id).distance(120))
       .force('charge', d3.forceManyBody())
-      .force('center', d3.forceCenter(width / 2, height / 2));
+      .force('center', d3.forceCenter(screenWidth / 2, screenHeight / 2));
 
     const color = d3.scaleOrdinal().range(['#468499', 'orange']);
 

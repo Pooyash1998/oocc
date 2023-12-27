@@ -15,7 +15,7 @@ function ProgressBar({triggerError, showProgressBar}) {
         setTimeout(() => {
           window.location.reload();
         }, 2500);
-      }, 10000);
+      }, 600000 ); //10min
       
       return () => clearTimeout(timeout);
   }, [showProgressBar, triggerError]);

@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
 import UploadButton from './uploadButton/UploadButton'
 
-function UploadModule ({ closeModal, onUploadSuccess, showProgressBar, updateGraphData, triggerError}) {
+function UploadModule({ closeModal, onUploadSuccess, showProgressBar, fetchGraphData, triggerError}) {
   const [file, setFile] = useState(null);  // State to keep track of the selected file
 
   // Function to handle file selection
@@ -56,7 +56,7 @@ function UploadModule ({ closeModal, onUploadSuccess, showProgressBar, updateGra
                 const processResult = await processResponse.json();
 
                 // Update the graph data using the function passed from the parent
-                updateGraphData(processResult); 
+                fetchGraphData(processResult); 
                 showProgressBar(false);
                 console.log('File processing successful:', processResult);
               } else {

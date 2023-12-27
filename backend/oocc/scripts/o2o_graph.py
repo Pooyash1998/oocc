@@ -1,4 +1,5 @@
-from ocpa.objects.log.importer.ocel2.sqlite import factory as ocel_import_factory
+from ocpa.objects.log.importer.ocel2.sqlite import factory as ocel_sqlite_factory
+from ocpa.objects.log.importer.ocel2.xml import factory as ocel_xml_factory
 import networkx as nx
 import os
 
@@ -6,12 +7,12 @@ def get_o2o_Graph(file_path):
     # Determine the file type based on the file extension
     file_type = get_file_type(file_path)
 
-    if file_type == 'jsonocel':
-        ocel = ''
+    if file_type == 'xml':
+        ocel = ocel_xml_factory.apply(file_path)
     elif file_type == 'xmlocel':
-        ocel = ''
+        ocel = ocel_xml_factory.apply(file_path)    
     elif file_type == 'sqlite':
-        ocel = ocel_import_factory.apply(file_path)
+        ocel = ocel_sqlite_factory.apply(file_path)
     else:
         raise ValueError(f"Unsupported file type: {file_type}")
     
@@ -49,7 +50,7 @@ def process_graph(graph, object_type_mapping):
     
     # Convert the graph to a dictionary that can be used in D3.js
     graph_dict = {
-        'nodes': [{'id': node, 'type': G.nodes[node]['type'], 'origin': 0 } for node in G.nodes()],
+        'nodes': [{'id': node, 'type': G.nodes[node]['type'] if 'type' in G.nodes[node] else 'undefined', 'origin': 0 } for node in G.nodes()],
         'links': [{'source': edge[0], 'target': edge[1], 'name': edge[2]['qualifier'], 'origin': 0 } for edge in G.edges(data=True)]
     }
 

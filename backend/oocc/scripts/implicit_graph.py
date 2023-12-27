@@ -1,4 +1,5 @@
-from ocpa.objects.log.importer.ocel2.sqlite import factory as ocel_import_factory
+from ocpa.objects.log.importer.ocel2.sqlite import factory as ocel_sqlite_factory
+from ocpa.objects.log.importer.ocel2.xml import factory as ocel_xml_factory
 import networkx as nx
 import itertools
 import os
@@ -7,12 +8,12 @@ def get_implicit_Graph(file_path):
 # Determine the file type based on the file extension
     file_type = get_file_type(file_path)
 
-    if file_type == 'jsonocel':
-        ocel = ''
+    if file_type == 'xml':
+        ocel = ocel_xml_factory.apply(file_path)
     elif file_type == 'xmlocel':
-        ocel = ''
+        ocel = ocel_xml_factory.apply(file_path)    
     elif file_type == 'sqlite':
-        ocel = ocel_import_factory.apply(file_path)
+        ocel = ocel_sqlite_factory.apply(file_path)
     else:
         raise ValueError(f"Unsupported file type: {file_type}")
 

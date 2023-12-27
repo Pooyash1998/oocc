@@ -9,13 +9,13 @@ import MenuIcon from '@mui/icons-material/Menu'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 
-function HeaderComponent ({ onMenuClick, isSidebarOpen, setUpdateGraphData, triggerError}) {
+function HeaderComponent ({ onMenuClick, isSidebarOpen, setfetchGraphData, triggerError}) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [showProgressBar, setShowProgressBar] = useState(false);
 
   // Function to pass the updateGraphData function to UploadModule
-  const updateGraphDataFn = (updateGraphData) => {
-    setUpdateGraphData(updateGraphData);
+  const fetchGraphDataFn = (fetchGraphData) => {
+    setfetchGraphData(fetchGraphData);
   };
   
   const openModal = () => setModalOpen(true);
@@ -52,7 +52,7 @@ function HeaderComponent ({ onMenuClick, isSidebarOpen, setUpdateGraphData, trig
         <section
         className="header_importButton" style={{ position: 'absolute', left: 80 }}>
           <ImportButton openModal={openModal} />
-          {isModalOpen && <UploadModule closeModal={closeModal} showProgressBar={setShowProgressBar} updateGraphData={updateGraphDataFn}
+          {isModalOpen && <UploadModule closeModal={closeModal} showProgressBar={setShowProgressBar} fetchGraphData={fetchGraphDataFn}
                                         triggerError={triggerError}/>}
         </section>
         {showProgressBar && <ProgressBar showProgressBar={setShowProgressBar} triggerError={triggerError}/>}
