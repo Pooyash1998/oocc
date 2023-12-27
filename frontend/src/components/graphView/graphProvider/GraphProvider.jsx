@@ -63,18 +63,33 @@ const GraphProvider = ({ GraphData, UpdateInfo}) => {
   const [finalGraphData, setFinalGraphData] = useState(mergedGraphData);
 
   const updateGraph = () => {
+    let newGraph
+   //check the Toggles first  
     if (UpdateInfo.exp && !UpdateInfo.imp) {
       // Only exp is true, filter out nodes and edges with origin !== 0
-      return expFilteredGraphData;
+      newGraph = expFilteredGraphData;
     } else if (!UpdateInfo.exp && UpdateInfo.imp) {
       // Only imp is true, filter out nodes and edges with origin !== 1
-      return impFilteredGraphData;
+      newGraph = impFilteredGraphData;
     } else if (!UpdateInfo.exp && !UpdateInfo.imp) {
       // both are set to false so show only nodes and edges with origin 2
-      return allFilteredGraphData;
+      newGraph = allFilteredGraphData;
     }
+      newGraph = mergedGraphData;
+   // now checking the Ot checkboxes
+   const otCheckedSet = new Set(Object.entries(UpdateInfo.ot_checked)
+    .filter(([_, checked]) => checked)
+    .map(([type]) => type)
+  );
+   console.log(otCheckedSet);
+   newGraph.nodes = newGraph.nodes.filter((node) => {
+     return otCheckedSet.has(node.type);
+   });
 
-    return mergedGraphData;
+   newGraph.links = newGraph.links.filter((link) => {
+     return otCheckedSet.has(link.source.type) && otCheckedSet.has(link.target.type);
+   });
+   setFinalGraphData(newGraph);
   };
   const calculateMetrics = () => {
     // Count true positives, false positives, and false negatives based on "origin" property
@@ -98,8 +113,8 @@ const GraphProvider = ({ GraphData, UpdateInfo}) => {
   calculateMetrics();
   // Update the graph data on when updateBtn in sidebar changes
   useEffect(() => {
-    setFinalGraphData(updateGraph());
-  }, [UpdateInfo.exp, UpdateInfo.imp]);
+    updateGraph();
+  }, [UpdateInfo.exp, UpdateInfo.imp, UpdateInfo.ot_checked]);
   
   return (
     <div>

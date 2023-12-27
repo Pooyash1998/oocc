@@ -35,15 +35,18 @@ function App () {
   const [error, setError] = useState(null);
   const [expChecked, setExpChecked] = useState(true);
   const [impChecked, setImpChecked] = useState(true);
+  const [checkedObjects, setCheckedObjects] = useState({});
   const [UpdateInfo, setUpdateInfo] = useState({
     exp: true,
     imp: true,
+    ot_checked : [],
   });
 
   const updateBtn = () => {
     setUpdateInfo({
       exp: expChecked, 
       imp: impChecked,
+      ot_checked : checkedObjects,
     });
   };
 
@@ -67,7 +70,10 @@ function App () {
             overflowX: 'hidden',
           }}
         >
-          <Sidebar open={sidebarOpen} onClose={toggleSidebar} updateBtn={updateBtn} expChecked={expChecked} impChecked={impChecked} setExpChecked={setExpChecked} setImpChecked={setImpChecked}/>
+          <Sidebar open={sidebarOpen} onClose={toggleSidebar} updateBtn={updateBtn}
+           expChecked={expChecked} impChecked={impChecked} setExpChecked={setExpChecked} 
+           setImpChecked={setImpChecked} fetchGraphData={fetchGraphData} checkedObjects={checkedObjects}
+          setCheckedObjects={setCheckedObjects}/>
         </Box>
 
         {/* Main content */}

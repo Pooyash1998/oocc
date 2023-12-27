@@ -6,6 +6,7 @@ from .models import EventLog
 from .serializers import EventLogSerializer
 from django.http import JsonResponse
 from oocc.scripts.o2o_graph import get_o2o_Graph
+from oocc.scripts.o2o_graph import get_ot_list
 from oocc.scripts.implicit_graph import get_implicit_Graph
 #####
 import time
@@ -29,10 +30,12 @@ class EventLogViewSet(viewsets.ModelViewSet):
                 exp_graph_data = get_o2o_Graph(event_log.file.path)
                 # get the object_event Relationships (implicit)
                 imp_graph_data = get_implicit_Graph(event_log.file.path)
-
+                # get the list of object types 
+                ot_list = get_ot_list()
                 # Include the graph data in the JSON response
                 response_data = {'message': 'File processed successfully', 'imp_graph_data': imp_graph_data,
-                                                                        'exp_graph_data':exp_graph_data}
+                                                                        'exp_graph_data':exp_graph_data,
+                                                                        'objectTypes': ot_list}
 
                 return JsonResponse(response_data, status=200)
             except Exception as e:

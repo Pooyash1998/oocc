@@ -3,6 +3,16 @@ from ocpa.objects.log.importer.ocel2.xml import factory as ocel_xml_factory
 import networkx as nx
 import os
 
+
+ot_list = None
+# this function should be called AFTER the get_o2o_Graph()
+def get_ot_list() :
+    global ot_list
+    if (ot_list):
+        return ot_list
+    else:
+        raise ValueError("the list is empty")
+
 def get_o2o_Graph(file_path):
     # Determine the file type based on the file extension
     file_type = get_file_type(file_path)
@@ -22,7 +32,10 @@ def get_o2o_Graph(file_path):
     ot_objects = ocel.obj.ot_objects
     # Create a new list where each object is mapped to its type
     object_type_mapping = [(obj_id, obj_type) for obj_type, obj_ids in ot_objects.items() for obj_id in obj_ids]
-    
+    # store the list of objectTypes 
+    global ot_list
+    ot_list = ocel.object_types
+
     return process_graph(graph, object_type_mapping)
 
 
