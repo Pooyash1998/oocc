@@ -1,4 +1,4 @@
-import {React, useEffect, useState} from 'react'
+import {React, useEffect, useState, useRef} from 'react'
 import GraphRenderer from './graphRenderer'
 
 const mergeGraphData = (GraphData) => {
@@ -48,7 +48,8 @@ const mergeGraphData = (GraphData) => {
 };
 
 const GraphProvider = ({ GraphData, UpdateInfo}) => {
-  
+  // Ref to track initial render
+  const isInitialRender = useRef(true);
   const mergedGraphData = mergeGraphData(GraphData);
   const expFilteredGraphData = {...mergedGraphData};
   const impFilteredGraphData = {...mergedGraphData};
@@ -63,33 +64,34 @@ const GraphProvider = ({ GraphData, UpdateInfo}) => {
   const [finalGraphData, setFinalGraphData] = useState(mergedGraphData);
 
   const updateGraph = () => {
-    let newGraph
-   //check the Toggles first  
-    if (UpdateInfo.exp && !UpdateInfo.imp) {
-      // Only exp is true, filter out nodes and edges with origin !== 0
-      newGraph = expFilteredGraphData;
-    } else if (!UpdateInfo.exp && UpdateInfo.imp) {
-      // Only imp is true, filter out nodes and edges with origin !== 1
-      newGraph = impFilteredGraphData;
-    } else if (!UpdateInfo.exp && !UpdateInfo.imp) {
-      // both are set to false so show only nodes and edges with origin 2
-      newGraph = allFilteredGraphData;
-    }
-      newGraph = mergedGraphData;
-   // now checking the Ot checkboxes
-   const otCheckedSet = new Set(Object.entries(UpdateInfo.ot_checked)
-    .filter(([_, checked]) => checked)
-    .map(([type]) => type)
-  );
-   console.log(otCheckedSet);
-   newGraph.nodes = newGraph.nodes.filter((node) => {
-     return otCheckedSet.has(node.type);
-   });
+        let newGraph
+        //Check the Toggles first  
+      if (UpdateInfo.exp && !UpdateInfo.imp) {
+        // Only exp is true, filter out nodes and edges with origin !== 0
+        newGraph = expFilteredGraphData;
+      } else if (!UpdateInfo.exp && UpdateInfo.imp) {
+        // Only imp is true, filter out nodes and edges with origin !== 1
+        newGraph = impFilteredGraphData;
+      } else if (!UpdateInfo.exp && !UpdateInfo.imp) {
+        // both are set to false so show only nodes and edges with origin 2
+        newGraph = allFilteredGraphData;
+      } // both set to true 
+        else newGraph = mergedGraphData;
 
-   newGraph.links = newGraph.links.filter((link) => {
-     return otCheckedSet.has(link.source.type) && otCheckedSet.has(link.target.type);
-   });
-   setFinalGraphData(newGraph);
+    //Now checking the Ot checkboxes
+    const otCheckedSet = new Set(Object.entries(UpdateInfo.ot_checked)
+      .filter(([_, checked]) => checked)
+      .map(([type]) => type)
+    );
+    //console.log(UpdateInfo.ot_checked)
+      newGraph.nodes = newGraph.nodes.filter((node) => {
+      return otCheckedSet.has(node.type);
+    });
+
+    newGraph.links = newGraph.links.filter((link) => {
+      return otCheckedSet.has(link.source.type) && otCheckedSet.has(link.target.type);
+    });
+    setFinalGraphData(newGraph);
   };
   const calculateMetrics = () => {
     // Count true positives, false positives, and false negatives based on "origin" property
@@ -110,10 +112,16 @@ const GraphProvider = ({ GraphData, UpdateInfo}) => {
     console.log('Precision:', precision);
     console.log('Recall:', recall);
   };
-  calculateMetrics();
-  // Update the graph data on when updateBtn in sidebar changes
+  //calculateMetrics();
+  //Update the graph data on when updateBtn in sidebar changes
   useEffect(() => {
+    // Check if it's not the initial render
+    if (!isInitialRender.current) {
     updateGraph();
+  } else {
+    // Update the ref to indicate that the initial render has occurred
+    isInitialRender.current = false;
+  }
   }, [UpdateInfo.exp, UpdateInfo.imp, UpdateInfo.ot_checked]);
   
   return (

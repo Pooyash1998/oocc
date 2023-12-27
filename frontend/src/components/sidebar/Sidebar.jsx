@@ -9,14 +9,15 @@ import { Typography } from '@mui/material'
 
 function Sidebar ({ open, onClose, updateBtn,setExpChecked,setImpChecked,impChecked,expChecked,fetchGraphData,checkedObjects,setCheckedObjects}) {
   
-  const [ot_list, setOtList] = useState(null);
+  const [ot_list, setOtList] = useState();
+  const [initilizeUpdateInfo,setInitilizeUpdateInfo] = useState(true);
 
   useEffect(() => {
     if (fetchGraphData) {
-      setOtList(fetchGraphData.objectTypes || []);
-        
+      setOtList(fetchGraphData.objectTypes);
     }
   }, [fetchGraphData]);
+
   // Initialize checkedObjects only when ot_list changes
   useEffect(() => {
     if (ot_list) {
@@ -27,6 +28,16 @@ function Sidebar ({ open, onClose, updateBtn,setExpChecked,setImpChecked,impChec
       setCheckedObjects(initialChecked);
     }
   }, [ot_list, setCheckedObjects]);
+
+// This effect will run only once to initializie the updateInfo via updatebtn 
+// only when the graphdata is there.
+useEffect(() => {
+  if (initilizeUpdateInfo && Object.keys(checkedObjects).length > 0) {
+    updateBtn();
+    setInitilizeUpdateInfo(false);
+  }
+}, [checkedObjects]); // Empty dependency array means it runs only once
+
   const handleCheckboxChange = (type) => {
     setCheckedObjects((prevCheckedItems) => ({
       ...prevCheckedItems,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import HeaderComponent from './components/headerComponent'
 import GraphView from './components/graphView'
 import Sidebar from './components/sidebar'
@@ -39,9 +39,9 @@ function App () {
   const [UpdateInfo, setUpdateInfo] = useState({
     exp: true,
     imp: true,
-    ot_checked : [],
+    ot_checked : {},
   });
-
+  
   const updateBtn = () => {
     setUpdateInfo({
       exp: expChecked, 
