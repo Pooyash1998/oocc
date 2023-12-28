@@ -176,7 +176,7 @@ const GraphRenderer = ({ data, expChecked}) => {
       .extent([[0, 0], [containerWidth, containerHeight]])
       .scaleExtent([1, 8])
       .on('zoom', zoomed);
-    
+
     svg.call(zoom).call(zoom.transform, initialTransform); // Apply the initial transform
    
     function zoomed(event) {
@@ -191,11 +191,15 @@ const GraphRenderer = ({ data, expChecked}) => {
     return () => {
     
     };
-  }, [width, data]);
+  }, [width, data, screenWidth, screenHeight]);
+    
+ 
+  
+  
 
   return (
     <div>
-      <svg ref={svgRef}></svg>
+      <svg className='svgEl' ref={svgRef}></svg>
       <Button onClick={zoomIn} sx={{padding:'0px', marginLeft:'0'}}> 
         <img src={ZoomInIcon} alt="Zoom In" style={{ width: '30px', height: '30px' }} />
       </Button>

@@ -5,6 +5,7 @@ import os
 
 
 ot_list = None
+ocel = None
 # this function should be called AFTER the get_o2o_Graph()
 def get_ot_list() :
     global ot_list
@@ -12,10 +13,21 @@ def get_ot_list() :
         return ot_list
     else:
         raise ValueError("the list is empty")
+# this function should be called AFTER the get_o2o_Graph()
+def get_insight() :
+    # Basic log statistics
+    statistics_string = (
+        "Number of Events: {}\n\t".format(len(ocel.log.log)) +
+        "Number of Process Executions: {}\n\t".format(len(ocel.process_executions)) +
+        "Number of Variants: {}\n\t".format(len(ocel.variants)) +
+        "Number of Activities: {}\n\t".format(len(ocel.log.log["event_activity"].unique()))
+    )
+    return statistics_string
 
-def get_o2o_Graph(file_path):
+def import_ocel(file_path):
     # Determine the file type based on the file extension
     file_type = get_file_type(file_path)
+    global ocel
 
     if file_type == 'xml':
         ocel = ocel_xml_factory.apply(file_path)
@@ -26,6 +38,9 @@ def get_o2o_Graph(file_path):
     else:
         raise ValueError(f"Unsupported file type: {file_type}")
     
+def get_o2o_Graph(file_path):
+    
+    import_ocel(file_path)
     # Extract object-to-object relationships and create a directed graph(these are explicit)
     graph = ocel.o2o_graph.graph
     # accessing 'ot_objects' which contains the mapping of object types to lists of object identifiers

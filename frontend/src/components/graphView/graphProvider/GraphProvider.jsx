@@ -47,7 +47,7 @@ const mergeGraphData = (GraphData) => {
   return mergedGraphData;
 };
 
-const GraphProvider = ({ GraphData, UpdateInfo}) => {
+const GraphProvider = ({ GraphData, UpdateInfo, setMetrics}) => {
   // Ref to track initial render
   const isInitialRender = useRef(true);
   const mergedGraphData = mergeGraphData(GraphData);
@@ -109,14 +109,15 @@ const GraphProvider = ({ GraphData, UpdateInfo}) => {
     const precision = truePositives / (truePositives + falsePositives);
     const recall = truePositives / (truePositives + falseNegatives);
 
-    console.log('Precision:', precision);
-    console.log('Recall:', recall);
+    setMetrics({p:precision,r:recall});
   };
-  //calculateMetrics();
+  
+  
   //Update the graph data on when updateBtn in sidebar changes
   useEffect(() => {
     // Check if it's not the initial render
     if (!isInitialRender.current) {
+    calculateMetrics();
     updateGraph();
   } else {
     // Update the ref to indicate that the initial render has occurred
