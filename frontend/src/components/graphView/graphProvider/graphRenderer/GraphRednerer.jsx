@@ -1,6 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef , useState} from 'react';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
+import { Button } from '@mui/material';
+// Import SVG files
+import ZoomInIcon from '../../../../assets/zoom-in.svg';
+import ZoomOutIcon from '../../../../assets/zoom-out.svg';
+import ResetZoomIcon from '../../../../assets/zoom-reset.svg';
 
 const tip = d3Tip()
   .attr('class', 'd3-tip')
@@ -51,55 +56,41 @@ const linkTip = d3Tip()
   }
 
 const GraphRenderer = ({ data, expChecked}) => {
+  
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
-  const width = '100%' ;//screenWidth * 0.95;
-  const height = screenHeight*0.85;//600;
+  const width = '100%';
+  const height = '83vh';
 
   const svgRef = useRef();
-  const zoomRef = useRef(d3.zoom().scaleExtent([0.25, 10]));
+  const containerRef = useRef(); // Ref for the container group
+  const [zoomState, setZoomState] = useState(d3.zoomIdentity);
 
   function zoomIn() {
-    d3.select(svgRef.current)
-      .call(zoomRef.current.scaleBy, 2);
+    const newZoomState = zoomState.scale(1.2);
+    const [x, y] = d3.zoomTransform(svgRef.current).invert([screenWidth / 2, screenHeight / 2]);
+    newZoomState.x = screenWidth / 2 - x * newZoomState.k;
+    newZoomState.y = screenHeight / 2 - y * newZoomState.k;
+    setZoomState(newZoomState);
+    containerRef.current.attr('transform', newZoomState);
   }
-  
+
   function zoomOut() {
-    d3.select(svgRef.current)
-      .call(zoomRef.current.scaleBy, 0.5);
+    const newZoomState = zoomState.scale(0.8);
+    const [x, y] = d3.zoomTransform(svgRef.current).invert([screenWidth / 2, screenHeight / 2]);
+    newZoomState.x = screenWidth / 2 - x * newZoomState.k;
+    newZoomState.y = screenHeight / 2 - y * newZoomState.k;
+    setZoomState(newZoomState);
+    containerRef.current.attr('transform', newZoomState);
   }
 
   function resetZoom() {
-    d3.select(svgRef.current)
-      .transition()
-      .call(zoomRef.current.scaleTo, 1);
-  }
-
-  function center() {
-    d3.select(svgRef.current)
-      .transition()
-      .call(zoomRef.current.translateTo, 0.5 * width, 0.5 * height);
-  }
-
-  function panLeft() {
-    d3.select(svgRef.current)
-      .transition()
-      .call(zoomRef.current.translateBy, -50, 0);
-  }
-
-  function panRight() {
-    d3.select(svgRef.current)
-      .transition()
-      .call(zoomRef.current.translateBy, 50, 0);
+    const newZoomState = d3.zoomIdentity;
+    setZoomState(newZoomState);
+    containerRef.current.attr('transform', newZoomState);
   }
 
   useEffect(() => {
-    function initZoom() {
-      d3.select(svgRef.current).call(zoomRef.current);
-    }
-
-    // Initialize zoom behavior
-    initZoom();
 
     d3.select(svgRef.current).selectAll('*').remove();
     if (!data) return;
@@ -108,6 +99,9 @@ const GraphRenderer = ({ data, expChecked}) => {
       .attr('width', width)
       .attr('height', height)
       .style('background-color', '#ffffff');
+     // Create a container group for nodes and links
+    const container = svg.append('g');
+    containerRef.current = container; // Save the container reference
 
     const simulation = d3.forceSimulation()
       .force('link', d3.forceLink().id(d => d.id).distance(120))
@@ -116,7 +110,7 @@ const GraphRenderer = ({ data, expChecked}) => {
 
     const color = d3.scaleOrdinal().range(['#468499', 'orange']);
 
-    const links = svg.selectAll('line')
+    const links = container.selectAll('line')
       .data(data.links)
       .enter().append('line')
       .attr('stroke-width', 3)
@@ -137,7 +131,7 @@ const GraphRenderer = ({ data, expChecked}) => {
       });
 
 
-      const nodes = svg.selectAll('circle')
+      const nodes = container.selectAll('circle')
       .data(data.nodes)
       .enter().append('circle')
       .attr('r', 18)
@@ -173,20 +167,44 @@ const GraphRenderer = ({ data, expChecked}) => {
     simulation.force('link')
       .links(data.links);
 
+    // Explicitly set initial transform state with a translation of (0, 0) and scale of 1
+    const initialTransform = d3.zoomIdentity.translate(0, 0).scale(1);
+    // Calculate actual width and height based on the parent container's size
+    const containerWidth = svg.node().parentNode.clientWidth;
+    const containerHeight = svg.node().parentNode.clientHeight;
+    const zoom = d3.zoom()
+      .extent([[0, 0], [containerWidth, containerHeight]])
+      .scaleExtent([1, 8])
+      .on('zoom', zoomed);
+    
+    svg.call(zoom).call(zoom.transform, initialTransform); // Apply the initial transform
+   
+    function zoomed(event) {
+      const newTransform = event.transform;
+      // Preserve the current scale but adjust the translation
+      //newTransform.x = zoomState.x + (event.transform.x - zoomState.x) / zoomState.k;
+      //newTransform.y = zoomState.y + (event.transform.y - zoomState.y) / zoomState.k;
+      setZoomState(newTransform);
+      container.attr('transform', newTransform);
+    }
+
     return () => {
-      svg.on('.zoom', null);
+    
     };
   }, [width, data]);
 
   return (
     <div>
       <svg ref={svgRef}></svg>
-      <button onClick={zoomIn}>Zoom in</button>
-      <button onClick={zoomOut}>Zoom out</button>
-      <button onClick={resetZoom}>Reset zoom</button>
-      <button onClick={panLeft}>Pan left</button>
-      <button onClick={panRight}>Pan right</button>
-      <button onClick={center}>Center</button>
+      <Button onClick={zoomIn} sx={{padding:'0px', marginLeft:'0'}}> 
+        <img src={ZoomInIcon} alt="Zoom In" style={{ width: '30px', height: '30px' }} />
+      </Button>
+      <Button onClick={zoomOut} sx={{padding:'0px', marginLeft:'0'}}>
+      <img src={ZoomOutIcon} alt="Zoom Out" style={{ width: '30px', height: '30px' }} />
+      </Button>
+      <Button onClick={resetZoom} sx={{padding:'0px', marginLeft:'0'}}>
+      <img src={ResetZoomIcon} alt="Reset Zoom" style={{ width: '30px', height: '30px' }} />
+      </Button>
     </div>
   );
 };
