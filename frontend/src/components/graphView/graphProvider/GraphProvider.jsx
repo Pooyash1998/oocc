@@ -1,98 +1,84 @@
 import {React, useEffect, useState, useRef} from 'react'
 import GraphRenderer from './graphRenderer'
 
-const mergeGraphData = (GraphData) => {
-  // Access imp_graph_data and exp_graph_data from Backend GraphData
-  const impGraphData = GraphData.imp_graph_data;
-  const expGraphData = GraphData.exp_graph_data;
-  
-  // Iterate over explicit nodes
-  expGraphData.nodes.forEach(expNode => {
-    // Find the corresponding implicit node by ID
-    const correspondingImplicitNode = impGraphData.nodes.find(impNode => impNode.id === expNode.id);
-    // If found, update the "origin" property to 2 in both explicit and implicit nodes
-    if (correspondingImplicitNode) {
-      expNode.origin = 2;
-      correspondingImplicitNode.origin = 2;
-    }
-  });
-  // Filter nodes from impGraphData with origin not equal to 2
-  const filteredImpNodes = impGraphData.nodes.filter(node => node.origin !== 2);
-  // Combine nodes from expGraphData and filtered impGraphData
-  const combinedNodes = expGraphData.nodes.concat(filteredImpNodes);
-
-  
-  // Update the "origin" property to 2 for edges in both explicit and implicit graphs
-  expGraphData.links.forEach(expEdge => {
-    const correspondingImpEdge = impGraphData.links.find(impEdge =>
-      (impEdge.source === expEdge.source && impEdge.target === expEdge.target) ||
-      (impEdge.source === expEdge.target && impEdge.target === expEdge.source)
-    );
-
-    if (correspondingImpEdge) {
-      correspondingImpEdge.origin = 2; expEdge.origin = 2;
-    } 
-  });
-  // Copy explicit edges to combinedEdges
-  const combinedEdges = [...expGraphData.links];
-  // Filter implicit edges with origin 1 and add them to combinedEdges
-  const implicitEdgesWithOrigin1 = impGraphData.links.filter(impEdge => impEdge.origin === 1);
-  combinedEdges.push(...implicitEdgesWithOrigin1);
-
-  //create a merged graph data object
-  const mergedGraphData = {
-    nodes: combinedNodes,
-    links: combinedEdges,
-  };
-  return mergedGraphData;
-};
-
-const GraphProvider = ({ GraphData, UpdateInfo, setMetrics}) => {
+const GraphProvider = ({ GraphData, UpdateInfo}) => {
   // Ref to track initial render
   const isInitialRender = useRef(true);
-  const mergedGraphData = mergeGraphData(GraphData);
+  const mergedGraphData = GraphData.merged;
   const expFilteredGraphData = {...mergedGraphData};
   const impFilteredGraphData = {...mergedGraphData};
   const allFilteredGraphData = {...mergedGraphData};
-  expFilteredGraphData.nodes = expFilteredGraphData.nodes.filter(node => node.origin === 0 || node.origin === 2 );
-  expFilteredGraphData.links = expFilteredGraphData.links.filter(link => link.origin === 0 || link.origin === 2 );
-  impFilteredGraphData.nodes = impFilteredGraphData.nodes.filter(node => node.origin === 1 || node.origin === 2 );
-  impFilteredGraphData.links = impFilteredGraphData.links.filter(link => link.origin === 1 || link.origin === 2 );
-  allFilteredGraphData.nodes = allFilteredGraphData.nodes.filter(node => node.origin === 2 );
+  expFilteredGraphData.links = expFilteredGraphData.links.filter(link => link.origin === 0 );
+  //expFilteredGraphData.nodes = expFilteredGraphData.nodes.filter(node => node.origin === 0 || node.origin === 2 );
+  {// now filter the corresponding nodes for the edges in expFilteredGraphData
+  const expcorresNodesID = new Set();
+    expFilteredGraphData.links.forEach(link => {
+      expcorresNodesID.add(link.source.id);
+      expcorresNodesID.add(link.target.id);
+    }); 
+    const expnodearr = Array.from(expcorresNodesID);
+    expFilteredGraphData.nodes = expFilteredGraphData.nodes.filter(node => expnodearr.includes(node.id));
+  } 
+  impFilteredGraphData.links = impFilteredGraphData.links.filter(link => link.origin === 1 );
+  //impFilteredGraphData.nodes = impFilteredGraphData.nodes.filter(node => node.origin === 1 || node.origin === 2 );
+  {// now filter the corresponding nodes for the edges in impFilteredGraphData
+    const impcorresNodesID = new Set();
+      impFilteredGraphData.links.forEach(link => {
+        impcorresNodesID.add(link.source.id);
+        impcorresNodesID.add(link.target.id);
+      }); 
+      const impnodearr = Array.from(impcorresNodesID);
+      impFilteredGraphData.nodes = impFilteredGraphData.nodes.filter(node => impnodearr.includes(node.id));
+    } 
   allFilteredGraphData.links = allFilteredGraphData.links.filter(link => link.origin === 2 );
-
-  const [finalGraphData, setFinalGraphData] = useState(mergedGraphData);
-
+  //allFilteredGraphData.nodes = allFilteredGraphData.nodes.filter(node => node.origin === 2 );
+  {// now filter the corresponding nodes for the edges is allFilteredGraphData
+    const allcorresNodesID = new Set();
+      allFilteredGraphData.links.forEach(link => {
+        allcorresNodesID.add(link.source.id);
+        allcorresNodesID.add(link.target.id);
+      }); 
+      const allnodearr = Array.from(allcorresNodesID);
+      allFilteredGraphData.nodes = allFilteredGraphData.nodes.filter(node => allnodearr.includes(node.id));
+    }
+  const [finalGraphData, setFinalGraphData] = useState({...mergedGraphData});
+  
   const updateGraph = () => {
         let newGraph
         //Check the Toggles first  
       if (UpdateInfo.exp && !UpdateInfo.imp) {
         // Only exp is true, filter out nodes and edges with origin !== 0
-        newGraph = expFilteredGraphData;
+        newGraph = {...expFilteredGraphData};
       } else if (!UpdateInfo.exp && UpdateInfo.imp) {
         // Only imp is true, filter out nodes and edges with origin !== 1
-        newGraph = impFilteredGraphData;
+        newGraph = {...impFilteredGraphData};
       } else if (!UpdateInfo.exp && !UpdateInfo.imp) {
         // both are set to false so show only nodes and edges with origin 2
-        newGraph = allFilteredGraphData;
+        newGraph = {...allFilteredGraphData};
       } // both set to true 
-        else newGraph = mergedGraphData;
+        else newGraph = {...mergedGraphData};
 
     //Now checking the Ot checkboxes
     const otCheckedSet = new Set(Object.entries(UpdateInfo.ot_checked)
       .filter(([_, checked]) => checked)
       .map(([type]) => type)
     );
-    //console.log(UpdateInfo.ot_checked)
-      newGraph.nodes = newGraph.nodes.filter((node) => {
-      return otCheckedSet.has(node.type);
-    });
+      // Include nodes with undefined type by default
+      otCheckedSet.add("undefined");
 
-    newGraph.links = newGraph.links.filter((link) => {
-      return otCheckedSet.has(link.source.type) && otCheckedSet.has(link.target.type);
+      newGraph.nodes = newGraph.nodes.filter((node) => {
+      return (otCheckedSet.has(node.type));
     });
+    
+    newGraph.links = newGraph.links.filter((link) => {
+      // Include links with undefined source/target types by default
+      const sourceType = link.source.type;
+      const targetType = link.target.type;
+    return ((otCheckedSet.has(sourceType)) && (otCheckedSet.has(targetType)));
+  });
     setFinalGraphData(newGraph);
   };
+
   const calculateMetrics = () => {
     // Count true positives, false positives, and false negatives based on "origin" property
     /*
@@ -109,15 +95,15 @@ const GraphProvider = ({ GraphData, UpdateInfo, setMetrics}) => {
     const precision = truePositives / (truePositives + falsePositives);
     const recall = truePositives / (truePositives + falseNegatives);
 
-    setMetrics({p:precision,r:recall});
+    //setMetrics({p:precision,r:recall});
   };
-  
-  
+   
   //Update the graph data on when updateBtn in sidebar changes
   useEffect(() => {
     // Check if it's not the initial render
     if (!isInitialRender.current) {
-    calculateMetrics();
+    console.log("info changed")
+    //calculateMetrics();
     updateGraph();
   } else {
     // Update the ref to indicate that the initial render has occurred

@@ -8,11 +8,10 @@ import Checkbox from '@mui/material/Checkbox'
 import Divider from '@mui/material/Divider'
 import  Typography from '@mui/material/Typography'
 
-function Sidebar ({ open, onClose, updateBtn,setExpChecked,setImpChecked,impChecked,expChecked,fetchGraphData,checkedObjects,setCheckedObjects,triggerError, metrics}) {
+function Sidebar ({ open, onClose, updateBtn,setExpChecked,setImpChecked,impChecked,expChecked,fetchGraphData,checkedObjects,setCheckedObjects,triggerError}) {
   
   const [ot_list, setOtList] = useState();
   const [initilizeUpdateInfo,setInitilizeUpdateInfo] = useState(true);
-  
   
   const saveAsSvg = () => {
     const svg = document.getElementsByClassName('svgEl')[0];
@@ -41,8 +40,7 @@ function Sidebar ({ open, onClose, updateBtn,setExpChecked,setImpChecked,impChec
   
   const saveReport = () => {
     if (fetchGraphData) {
-      const { stat, imp_graph_data, exp_graph_data } = fetchGraphData;
-  
+      const { stat, imp_graph_data, exp_graph_data ,metrics} = fetchGraphData;
       // Count nodes and edges for imp_graph_data and exp_graph_data
       const impNodesCount = imp_graph_data.nodes.length;
       const impEdgesCount = imp_graph_data.links.length;

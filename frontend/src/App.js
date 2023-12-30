@@ -33,7 +33,6 @@ function App () {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [fetchGraphData, setfetchGraphData] = useState(null);
   const [error, setError] = useState(null);
-  const [metrics,setMetrics] = useState({p: null,r:null});
   const [expChecked, setExpChecked] = useState(true);
   const [impChecked, setImpChecked] = useState(true);
   const [checkedObjects, setCheckedObjects] = useState({});
@@ -42,7 +41,7 @@ function App () {
     imp: true,
     ot_checked : {},
   });
-  
+
   const updateBtn = () => {
     setUpdateInfo({
       exp: expChecked, 
@@ -74,7 +73,7 @@ function App () {
           <Sidebar open={sidebarOpen} onClose={toggleSidebar} updateBtn={updateBtn}
            expChecked={expChecked} impChecked={impChecked} setExpChecked={setExpChecked} 
            setImpChecked={setImpChecked} fetchGraphData={fetchGraphData} checkedObjects={checkedObjects}
-          setCheckedObjects={setCheckedObjects} triggerError={triggerError} metrics={metrics}/>
+          setCheckedObjects={setCheckedObjects} triggerError={triggerError}/>
         </Box>
 
         {/* Main content */}
@@ -88,7 +87,7 @@ function App () {
 
             {/* GraphView in the center */}
             <Grid item xs={12} sm={12} md={10}>
-             <GraphView sidebarOpen={sidebarOpen} GraphData={fetchGraphData} UpdateInfo={UpdateInfo} setMetrics={setMetrics}/>
+             <GraphView sidebarOpen={sidebarOpen} GraphData={fetchGraphData} UpdateInfo={UpdateInfo}/>
             </Grid>
              {/* Legend */}
              {fetchGraphData && (

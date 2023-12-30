@@ -1,4 +1,4 @@
-import React, { useEffect, useRef , useState} from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import { Button } from '@mui/material';
@@ -64,30 +64,28 @@ const GraphRenderer = ({ data, expChecked}) => {
 
   const svgRef = useRef();
   const containerRef = useRef(); // Ref for the container group
-  const [zoomState, setZoomState] = useState(d3.zoomIdentity);
+  const zoomStateRef = useRef(d3.zoomIdentity);
 
   function zoomIn() {
-    const newZoomState = zoomState.scale(1.2);
-    const [x, y] = d3.zoomTransform(svgRef.current).invert([screenWidth / 2, screenHeight / 2]);
-    newZoomState.x = screenWidth / 2 - x * newZoomState.k;
-    newZoomState.y = screenHeight / 2 - y * newZoomState.k;
-    setZoomState(newZoomState);
-    containerRef.current.attr('transform', newZoomState);
+    d3.select(svgRef.current).call(zoom.scaleBy, 1.2);
   }
 
   function zoomOut() {
-    const newZoomState = zoomState.scale(0.8);
-    const [x, y] = d3.zoomTransform(svgRef.current).invert([screenWidth / 2, screenHeight / 2]);
-    newZoomState.x = screenWidth / 2 - x * newZoomState.k;
-    newZoomState.y = screenHeight / 2 - y * newZoomState.k;
-    setZoomState(newZoomState);
-    containerRef.current.attr('transform', newZoomState);
+    d3.select(svgRef.current).call(zoom.scaleBy, 0.8);
   }
 
   function resetZoom() {
-    const newZoomState = d3.zoomIdentity;
-    setZoomState(newZoomState);
-    containerRef.current.attr('transform', newZoomState);
+    d3.select(svgRef.current).call(zoom.transform, d3.zoomIdentity);
+  }
+
+  const zoom = d3.zoom()
+    .extent([[0, 0], [screenWidth, screenHeight]])
+    .scaleExtent([0.1, 8])
+    .on('zoom', zoomed);
+
+  function zoomed(event) {
+    zoomStateRef.current = event.transform;
+    containerRef.current.attr('transform', event.transform);
   }
 
   useEffect(() => {
@@ -105,7 +103,7 @@ const GraphRenderer = ({ data, expChecked}) => {
 
     const simulation = d3.forceSimulation()
       .force('link', d3.forceLink().id(d => d.id).distance(120))
-      .force('charge', d3.forceManyBody())
+      .force('charge', d3.forceManyBody().strength(-1))
       .force('center', d3.forceCenter(screenWidth / 2, screenHeight / 2));
 
     const color = d3.scaleOrdinal().range(['#468499', 'orange']);
@@ -116,7 +114,7 @@ const GraphRenderer = ({ data, expChecked}) => {
       .attr('stroke-width', 3)
       .style('stroke', d => {
         if (d.origin === 1) return '#00ff00';   // Origin 1: Green
-        if (d.origin === 1) return 'red';     // Origin 0: Red
+        if (d.origin === 0) return 'red';     // Origin 0: Red
         return '#8F8F8F';                    // Origin 2: Default color
       })
       .on('mouseover', function (event, d) {
@@ -167,27 +165,7 @@ const GraphRenderer = ({ data, expChecked}) => {
     simulation.force('link')
       .links(data.links);
 
-    // Explicitly set initial transform state with a translation of (0, 0) and scale of 1
-    const initialTransform = d3.zoomIdentity.translate(0, 0).scale(1);
-    // Calculate actual width and height based on the parent container's size
-    const containerWidth = svg.node().parentNode.clientWidth;
-    const containerHeight = svg.node().parentNode.clientHeight;
-    const zoom = d3.zoom()
-      .extent([[0, 0], [containerWidth, containerHeight]])
-      .scaleExtent([1, 8])
-      .on('zoom', zoomed);
-
-    svg.call(zoom).call(zoom.transform, initialTransform); // Apply the initial transform
-   
-    function zoomed(event) {
-      const newTransform = event.transform;
-      // Preserve the current scale but adjust the translation
-      //newTransform.x = zoomState.x + (event.transform.x - zoomState.x) / zoomState.k;
-      //newTransform.y = zoomState.y + (event.transform.y - zoomState.y) / zoomState.k;
-      setZoomState(newTransform);
-      container.attr('transform', newTransform);
-    }
-
+      svg.call(zoom);
     return () => {
     
     };

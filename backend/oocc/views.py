@@ -9,6 +9,7 @@ from oocc.scripts.o2o_graph import get_o2o_Graph
 from oocc.scripts.o2o_graph import get_ot_list
 from oocc.scripts.o2o_graph import get_insight
 from oocc.scripts.implicit_graph import get_implicit_Graph
+from oocc.scripts.graphUtils import *
 #####
 import time
 
@@ -31,26 +32,29 @@ class EventLogViewSet(viewsets.ModelViewSet):
                 exp_graph_data = get_o2o_Graph(event_log.file.path)
                 # get the object_event Relationships (implicit)
                 imp_graph_data = get_implicit_Graph(event_log.file.path)
+                #merge the both graphs
+                merged_graph_data = merge_graph_data(imp_graph_data,exp_graph_data)
+                #now randomize graph
+                rand_graph_data = get_random_subset(merged_graph_data)
                 # get the list of object types 
                 ot_list = get_ot_list()
                 # get some info on the log 
                 stat = get_insight()
+                # calculating the metrics 
+                metrics = calculate_metrics(merged_graph_data)
                 # Include the graph data in the JSON response
                 response_data = {'message': 'File processed successfully', 'imp_graph_data': imp_graph_data,
                                                                         'exp_graph_data':exp_graph_data,
+                                                                        'merged':rand_graph_data,
                                                                         'objectTypes': ot_list,
-                                                                        'stat': stat}
+                                                                        'stat': stat,
+                                                                        'metrics' : metrics}
 
                 return JsonResponse(response_data, status=200)
             except Exception as e:
                 # Log detailed error information
                 print(f"Error getting the Graph : {str(e)}")
                 return JsonResponse({'error': 'Internal Server Error'}, status=500)
-            
-            # Process the event log using PM4Py
-            #try:   
-            #except Exception as e:
-            # Log detailed error information
             
         except Exception as e:
             # Log detailed error information
