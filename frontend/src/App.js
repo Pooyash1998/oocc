@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {useState} from 'react'
 import HeaderComponent from './components/headerComponent'
 import GraphView from './components/graphView'
 import Sidebar from './components/sidebar'

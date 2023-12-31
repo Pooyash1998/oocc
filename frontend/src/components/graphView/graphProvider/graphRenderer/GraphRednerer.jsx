@@ -32,27 +32,29 @@ const linkTip = d3Tip()
   .style('color', '#212529');  
 
   function drag(simulation) {
-    function dragStarted(event) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      event.subject.fx = event.subject.x;
-      event.subject.fy = event.subject.y;
+    function dragStarted(event, d) {
+      if (!event.active) simulation.alphaTarget(0.1).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+      simulation.force('charge').strength(0); // Change the strength as needed
     }
   
-    function dragged(event) {
-      event.subject.fx = event.x;
-      event.subject.fy = event.y;
+    function dragged(event, d) {
+      d.fx = event.x;
+      d.fy = event.y;
     }
   
-    function dragEnded(event) {
+    function dragEnded(event, d) {
       if (!event.active) simulation.alphaTarget(0);
-      event.subject.fx = null;
-      event.subject.fy = null;
+      d.fx = null;
+      d.fy = null;
+      simulation.force('charge').strength(-15); // Reset the strength
     }
   
     return d3.drag()
-      .on('start', dragStarted)
-      .on('drag', dragged)
-      .on('end', dragEnded);
+      .on('start', (event, d) => dragStarted(event, d))
+      .on('drag', (event, d) => dragged(event, d))
+      .on('end', (event, d) => dragEnded(event, d));
   }
 
 const GraphRenderer = ({ data, expChecked}) => {
@@ -103,11 +105,11 @@ const GraphRenderer = ({ data, expChecked}) => {
 
     const simulation = d3.forceSimulation()
       .force('link', d3.forceLink().id(d => d.id).distance(120))
-      .force('charge', d3.forceManyBody().strength(-1))
+      .force('charge', d3.forceManyBody().strength(-15))
       .force('center', d3.forceCenter(screenWidth / 2, screenHeight / 2));
 
-    const color = d3.scaleOrdinal().range(['#468499', 'orange']);
-
+    //const color = d3.scaleOrdinal().range(['#468499', 'orange']);
+    const color = d3.scaleOrdinal().range(['#3498db', '#2980b9', '#0077cc', '#006699', '#005580']);
     const links = container.selectAll('line')
       .data(data.links)
       .enter().append('line')

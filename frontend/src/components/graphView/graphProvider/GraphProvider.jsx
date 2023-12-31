@@ -65,6 +65,7 @@ const GraphProvider = ({ GraphData, UpdateInfo}) => {
     );
       // Include nodes with undefined type by default
       otCheckedSet.add("undefined");
+      otCheckedSet.add("unknown");
 
       newGraph.nodes = newGraph.nodes.filter((node) => {
       return (otCheckedSet.has(node.type));
@@ -78,32 +79,11 @@ const GraphProvider = ({ GraphData, UpdateInfo}) => {
   });
     setFinalGraphData(newGraph);
   };
-
-  const calculateMetrics = () => {
-    // Count true positives, false positives, and false negatives based on "origin" property
-    /*
-    Precision is the ratio of correctly identified implicit relationships (true positives) 
-    to the total number of identified implicit relationships.
-    Recall is the ratio of correctly identified implicit relationships (true positives) 
-    to the total number of actual implicit relationships.
-
-    */
-    const truePositives = mergedGraphData.links.filter(link => link.origin === 2).length;
-    const falsePositives = mergedGraphData.links.filter(link => link.origin === 1).length;
-    const falseNegatives = mergedGraphData.links.filter(link => link.origin === 0).length;
-
-    const precision = truePositives / (truePositives + falsePositives);
-    const recall = truePositives / (truePositives + falseNegatives);
-
-    //setMetrics({p:precision,r:recall});
-  };
    
   //Update the graph data on when updateBtn in sidebar changes
   useEffect(() => {
     // Check if it's not the initial render
     if (!isInitialRender.current) {
-    console.log("info changed")
-    //calculateMetrics();
     updateGraph();
   } else {
     // Update the ref to indicate that the initial render has occurred

@@ -19,12 +19,7 @@ OOCC is a sophisticated software tool designed to compare and evaluate object-to
 ## Getting Started
 1. Clone the repository: `git clone https://git.rwth-aachen.de/pooya_sh1998/oocc.git`
 2. Set up the environment using Docker: `docker-compose up`
-3. Access the application via a web browser: `http://localhost:8000`
-
-## Installation
-1. Install Python 3.x.
-2. Install necessary Python packages: `pip install -r requirements.txt`
-3. Install JavaScript dependencies: `npm install`
+3. Access the application via a web browser: [http://localhost:3000](http://localhost:3000)
 
 ## Usage
 1. Upload event logs using the provided interface.
@@ -37,7 +32,7 @@ This project is for Software Projekt Praktikum (SPP) at the Chair of Process and
 ## Acknowledgments
 - References and Credits listed in the SRS document.
 
-For detailed installation and usage instructions, please refer to the [Documentation](docs/).
+For detailed information on installation and usage, please refer to the [Documentation](docs/).
 
 For any additional queries or support, please contact:
 - Pouya.esfahani@RWTH-aachen.de
