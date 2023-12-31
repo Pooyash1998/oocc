@@ -1,29 +1,28 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Switch, FormControlLabel } from '@mui/material'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
-function ImplicitToggle () {
-  const [checked, setChecked] = useState(true)
-
+function ImplicitToggle ({setImpChecked, impChecked}) {
+  
   const handleChange = (event) => {
-    setChecked(event.target.checked)
+    setImpChecked(event.target.checked)
   }
 
   return (
     <FormControlLabel
     control={
       <Switch
-        checked={checked}
+        checked={impChecked}
         onChange={handleChange}
         icon={<VisibilityOffIcon sx={{ marginTop: '-2px' }} />}
         checkedIcon={<VisibilityIcon sx={{ marginTop: '-2px' }} />}
       />
     }
-    label={checked ? 'Implicit Relationships' : 'Implicit Relationships'}
+    label={'Only Implicit Relationships'}
     sx={{
       '& .MuiTypography-root': {
-        color: checked ? 'black' : 'grey'
+        color: impChecked ? 'black' : 'grey'
       },
       marginLeft: '7px'
     }}

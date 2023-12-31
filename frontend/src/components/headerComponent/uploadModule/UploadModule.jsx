@@ -5,9 +5,9 @@ import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
 import UploadButton from './uploadButton/UploadButton'
 
-function UploadModule ({ closeModal, onUploadSuccess, updateProgress}) {
+function UploadModule({ closeModal, onUploadSuccess, showProgressBar, fetchGraphData, triggerError}) {
   const [file, setFile] = useState(null);  // State to keep track of the selected file
-   
+
   // Function to handle file selection
   const handleFileSelect = (selectedFile) => {
     setFile(selectedFile);
@@ -18,6 +18,7 @@ function UploadModule ({ closeModal, onUploadSuccess, updateProgress}) {
     closeModal();
   
     if (!file) {
+      triggerError('No file selected!');
       console.log('No file selected');
       return;
     }
@@ -26,15 +27,8 @@ function UploadModule ({ closeModal, onUploadSuccess, updateProgress}) {
     formData.append('file', file);
   
     try {
+      showProgressBar(true);
       const xhr = new XMLHttpRequest();
-  
-      xhr.upload.addEventListener('progress', (event) => {
-        if (event.lengthComputable) {
-          const progress = (event.loaded / event.total) * 100;
-          updateProgress(progress);
-        }
-      });
-  
       xhr.open('POST', 'http://localhost:8000/api/eventlogs/');
       xhr.setRequestHeader('Accept', 'application/json');
   
@@ -43,7 +37,6 @@ function UploadModule ({ closeModal, onUploadSuccess, updateProgress}) {
           try {
             const result = JSON.parse(xhr.responseText);
             console.log('Upload successful. Result:', result);
-  
             // Call the onUploadSuccess function if it's defined
             if (onUploadSuccess) {
               onUploadSuccess(result);
@@ -61,24 +54,36 @@ function UploadModule ({ closeModal, onUploadSuccess, updateProgress}) {
   
               if (processResponse.status === 200) {
                 const processResult = await processResponse.json();
+
+                // Update the graph data using the function passed from the parent
+                fetchGraphData(processResult); 
+                showProgressBar(false);
                 console.log('File processing successful:', processResult);
               } else {
+                showProgressBar(false);
+                triggerError("An Error occured during file processing!");
                 console.error('File processing failed:', processResponse.statusText);
               }
             } catch (processError) {
+              showProgressBar(false);
+              triggerError("An Error occured during file processing!");
               console.error('Error during file processing:', processError);
             }
           } catch (error) {
+            showProgressBar(false);
             console.error('Error parsing JSON:', error);
           }
         } else {
+          showProgressBar(false);
           console.error('Upload failed:', xhr.responseText);
+          triggerError("An Error occured during file Upload!");
         }
       };
   
       // Call xhr.send after setting up the onload handler
       xhr.send(formData);
     } catch (error) {
+      triggerError("An Error occured during file Upload!");
       console.error('Error during upload:', error);
     } finally {
       setFile(null); // Reset the file selection
