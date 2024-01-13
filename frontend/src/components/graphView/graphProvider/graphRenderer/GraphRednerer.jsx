@@ -58,7 +58,7 @@ const linkTip = d3Tip()
       .on('end', (event, d) => dragEnded(event, d));
   }
 
-const GraphRenderer = ({ data, expChecked}) => {
+const GraphRenderer = ({ data, colorSwitch=false}) => {
   
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
@@ -109,8 +109,14 @@ const GraphRenderer = ({ data, expChecked}) => {
       .force('charge', d3.forceManyBody().strength(-15))
       .force('center', d3.forceCenter(screenWidth / 2, screenHeight / 2));
 
-    //const color = d3.scaleOrdinal().range(['#468499', 'orange']);
     const color = d3.scaleOrdinal().range(['#3498db', '#2980b9', '#0077cc', '#006699', '#005580']);
+    // Create a color scale for different node types
+    const nodeColorScale = d3.scaleOrdinal(d3.schemeCategory10);
+    // If colorSwitch is true, use the color scale based on node types
+    // Otherwise, use the default color palette
+    const nodeColor = colorSwitch ? d => nodeColorScale(d.type) : color;
+    
+    
     const links = container.selectAll('line')
       .data(data.links)
       .enter().append('line')
@@ -137,7 +143,7 @@ const GraphRenderer = ({ data, expChecked}) => {
       .enter().append('circle')
       .attr('r', 18)
       .attr('fill','white')
-      .attr('stroke', d => color(d.id)) // Set the stroke color based on your data
+      .attr('stroke', d => nodeColor(d)) // Set the stroke color based on your data
       .attr('stroke-width', 3)
       .style('stroke-dasharray', d => (d.origin === 1) ? '3,3' : (d.origin === 0) ? '15,10' : 'none') // Dashed stroke for origin 1, Dashed stroke for origin 0
       .call(drag(simulation))

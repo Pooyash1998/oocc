@@ -24,7 +24,7 @@ function ImplicitToggle ({setImpChecked, impChecked}) {
       '& .MuiTypography-root': {
         color: impChecked ? 'black' : 'grey'
       },
-      marginLeft: '7px'
+      marginLeft: '-15px'
     }}
     />
   )

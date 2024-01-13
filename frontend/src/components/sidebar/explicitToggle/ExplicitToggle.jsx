@@ -24,7 +24,7 @@ function ExplicitToggle ({expChecked, setExpChecked}) {
         '& .MuiTypography-root': {
           color: expChecked ? 'black' : 'grey'
         },
-        marginLeft: '7px'
+        marginLeft: '-15px'
       }}
     />
   )

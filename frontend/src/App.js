@@ -35,10 +35,12 @@ function App () {
   const [error, setError] = useState(null);
   const [expChecked, setExpChecked] = useState(true);
   const [impChecked, setImpChecked] = useState(true);
+  const [colorSwitch, setColorSwitch] = useState(false);
   const [checkedObjects, setCheckedObjects] = useState({});
   const [UpdateInfo, setUpdateInfo] = useState({
     exp: true,
     imp: true,
+    colorSwitch: false,
     ot_checked : {},
   });
 
@@ -46,6 +48,7 @@ function App () {
     setUpdateInfo({
       exp: expChecked, 
       imp: impChecked,
+      colorSwitch: colorSwitch,
       ot_checked : checkedObjects,
     });
   };
@@ -72,6 +75,7 @@ function App () {
         >
           <Sidebar open={sidebarOpen} onClose={toggleSidebar} updateBtn={updateBtn}
            expChecked={expChecked} impChecked={impChecked} setExpChecked={setExpChecked} 
+           colorSwitch={colorSwitch} setColorSwitch={setColorSwitch}
            setImpChecked={setImpChecked} fetchGraphData={fetchGraphData} checkedObjects={checkedObjects}
           setCheckedObjects={setCheckedObjects} triggerError={triggerError}/>
         </Box>

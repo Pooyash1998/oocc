@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {React, useEffect, useState, useRef} from 'react'
 import GraphRenderer from './graphRenderer'
 
@@ -90,11 +89,11 @@ const GraphProvider = ({ GraphData, UpdateInfo}) => {
     // Update the ref to indicate that the initial render has occurred
     isInitialRender.current = false;
   }
-  }, [UpdateInfo.exp, UpdateInfo.imp, UpdateInfo.ot_checked]);
+  }, [UpdateInfo.exp, UpdateInfo.imp, UpdateInfo.ot_checked, UpdateInfo.colorSwitch]);
   
   return (
     <div>
-      <GraphRenderer data={finalGraphData}/>
+      <GraphRenderer data={finalGraphData} colorSwitch={UpdateInfo.colorSwitch}/>
     </div>
   )
 }

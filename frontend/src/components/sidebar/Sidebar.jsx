@@ -2,6 +2,7 @@ import {React, useState, useEffect} from 'react'
 import Drawer from '@mui/material/Drawer'
 import ExplicitToggle from './explicitToggle'
 import ImplicitToggle from './implicitToggle'
+import ColorSwitch from './colorSwitch'
 import Button from '@mui/material/Button'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
@@ -9,7 +10,7 @@ import Divider from '@mui/material/Divider'
 import  Typography from '@mui/material/Typography'
 import PieChart from './pieChart'
 
-function Sidebar ({ open, onClose, updateBtn,setExpChecked,setImpChecked,impChecked,expChecked,fetchGraphData,checkedObjects,setCheckedObjects,triggerError}) {
+function Sidebar ({ open, onClose, updateBtn,colorSwitch,setColorSwitch,setExpChecked,setImpChecked,impChecked,expChecked,fetchGraphData,checkedObjects,setCheckedObjects,triggerError}) {
   
   const [ot_list, setOtList] = useState();
   const [initilizeUpdateInfo,setInitilizeUpdateInfo] = useState(true);
@@ -143,7 +144,7 @@ useEffect(() => {
       <section className="sidebar" style={{ padding: '10px' }}>
         <ExplicitToggle expChecked={expChecked} setExpChecked={setExpChecked}/>
         <ImplicitToggle impChecked={impChecked} setImpChecked={setImpChecked}/>
-        
+        <ColorSwitch ColorSwitch={colorSwitch} setColorSwitch={setColorSwitch}/>
         {/* Generate checkboxes for each object type */}
         <Typography sx={{ margin: '20px 0', textAlign: 'left', fontWeight: 'bold' }}>
           Filter Object Types:
@@ -185,7 +186,7 @@ useEffect(() => {
         }}>Update Graph</Button>
 
         {/* Divider */}
-      <Divider style={{ marginTop: '30px', marginBottom: '10px' }} />
+      <Divider style={{ marginTop: '20px', marginBottom: '5px' }} />
 
       {/* Export section */}
       <Typography fontWeight="bold">
@@ -205,7 +206,7 @@ useEffect(() => {
       </Button>
   
       {/* Metrics */}
-      <Typography fontWeight="bold" marginTop='20px'>
+      <Typography fontWeight="bold" marginTop='15px'>
         Metrics:
       </Typography>
       <PieChart precision={precision} recall={recall} width={250} height={150} />
