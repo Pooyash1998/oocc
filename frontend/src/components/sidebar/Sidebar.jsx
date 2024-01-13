@@ -7,12 +7,21 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import Divider from '@mui/material/Divider'
 import  Typography from '@mui/material/Typography'
+import PieChart from './pieChart'
 
 function Sidebar ({ open, onClose, updateBtn,setExpChecked,setImpChecked,impChecked,expChecked,fetchGraphData,checkedObjects,setCheckedObjects,triggerError}) {
   
   const [ot_list, setOtList] = useState();
   const [initilizeUpdateInfo,setInitilizeUpdateInfo] = useState(true);
   
+  let precision = 0;
+  let recall = 0;
+
+  if (fetchGraphData) {
+    precision = fetchGraphData.metrics.p;
+    recall = fetchGraphData.metrics.r;
+  }
+
   const saveAsSvg = () => {
     const svg = document.getElementsByClassName('svgEl')[0];
   
@@ -194,7 +203,12 @@ useEffect(() => {
       style={{ marginTop:'20px',marginRight:'10px', width:'120px'}}>
         Get Report
       </Button>
-      
+  
+      {/* Metrics */}
+      <Typography fontWeight="bold" marginTop='20px'>
+        Metrics:
+      </Typography>
+      <PieChart precision={precision} recall={recall} width={250} height={150} />
       </section>
     </Drawer>
   )
