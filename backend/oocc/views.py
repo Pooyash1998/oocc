@@ -30,7 +30,6 @@ class EventLogViewSet(viewsets.ModelViewSet):
             try:
                 # Getting the o2o Relationships (explicit)
                 exp_graph_data = get_o2o_Graph(event_log.file.path)
-                print(exp_graph_data)
                 # get the object_event Relationships (implicit)
                 imp_graph_data = get_implicit_Graph(event_log.file.path)
                 #merge the both graphs
