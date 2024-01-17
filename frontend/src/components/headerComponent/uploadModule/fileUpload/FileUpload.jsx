@@ -107,7 +107,7 @@ function FileUpload ({ onFileSelect }) {
             fontStyle :'italic',
             textShadow : '0.5px 0.5px 1px rgba(0,0,0,0.5)'
           }}>
-          The Supported formats are : jsonocel, xmlocel, sqlite
+          The Supported formats are : xmlocel, xml, sqlite
         </Typography>
       <input id="file-upload" type="file" onChange={onFileChange} hidden />
       {file && <p>File selected: {file.name}</p>}
