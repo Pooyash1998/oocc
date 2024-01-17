@@ -86,7 +86,7 @@ Overall, the MIRROR UI emphasizes a clear and intuitive approach to complex data
 
 # Advanced Features
 
-![alt_text](imag/UI.png "UI")
+![alt_text](img/UI.png "UI")
 
 ### File Import Compatibility
 
@@ -151,29 +151,28 @@ This section provides a step-by-step walkthrough of an example run in the MIRROR
 * Ensure the file is in one of the supported formats: XML, XMLOCEL, or SQLite.
 * Once the file is selected, click on `"Upload"` to proceed.
 
-![alt_text](imag/import.png "import")
+<img src="img/import.png" alt="import" width="600">
 
 ### Viewing the Graph
 
 * Following a successful upload and processing, the application will display a progress bar. Once the processing is complete, users will be presented with an interactive graph representing the object relationships derived from the uploaded object centric eventlog file.
 
-![alt_text](imag/image1.png "view_grpah")
+![alt_text](img/image1.png "view_grpah")
 
 
 * You can interact with the graph by hovering on nodes or edges to view details about the specific object or relationship that is displayed, or by dragging nodes to reorganize the view.
 
-![alt_text](imag/tooltip.png "tooltip")
+<img src="img/tooltip.png" alt="tooltip" width="550">
 
 * In the bottom right of the graph is a Legend displayed to help interpret the different types of nodes and edges displayed in the graph.
 
 
-![alt_text](images/legend.png "legend")
-
+<img src="img/legend.png" alt="legend" width="250">
 
 * In the bottom left of the graph zoom controls can be found to zoom in and out of the graph or reset the view to default, by clicking the corresponding icons.
 
 
-![alt_text](images/zoom.png "zoom")
+<img src="img/zoom.png" alt="zoom" width="300">
 
 
 * By holding left click and moving around with the cursor the graph can be moved around as a whole and the zoom level can also be adjusted using the mousewheel or touch gestures.
@@ -186,24 +185,28 @@ This section provides a step-by-step walkthrough of an example run in the MIRROR
 * In the top part of the sidebar are 2 toggles to enable or disable the view of implicit and explicit relationships for an easier analysis for the different relationship types found in the event logs.
 
 
-![alt_text](images/toggles.png "toggles")
+
+<img src="img/toggles.png" alt="toggles" width="400">
 
 
 * Below there is another toggle “Coloring based on Object Type” that colors all nodes based on the object type in the event logs, to make it easier to see what object types are connected to each other.
 
-![alt_text](images/colorswitch.png "colorswitch")
+
+<img src="img/colorswitch.png" alt="colorswitch" width="400">
 
 
 * In the “Filter Object Types”- Tab different objects can be marked in checkboxes to display only specific types of objects in the graph and filter out the rest. That helps when not all objects in the graph are of interest or relevant for analysis.
 
+<img src="img/ot.png" alt="ObjectType filtering" width="300">
 
-![alt_text](images/ot.png "ObjectType filtering")
 
 
 * To apply all the changes to the graph the “Update Graph”- button needs to be pressed after selecting the customization options.
 
 
-![alt_text](images/updateg.png "updateg")
+
+<img src="img/updateg.png" alt="Update button" width="200">
+
 
 
 ### Exporting Graph Data
@@ -212,19 +215,17 @@ This section provides a step-by-step walkthrough of an example run in the MIRROR
 * With the “Get Report”- button a .txt report file can be downloaded to get statistics about the graph and the event logs. The report contains the number of events, process executions, variants, such as the number or implicit and explicit nodes and edges in the graph.
 
 
+<img src="img/export.png" alt="export" width="200">
 
-![alt_text](images/export.png "export")
+<img src="img/report.png" alt="report" width="300">
 
-![alt_text](images/report.png "report")
 
 
 ### Precision and Recall Metrics of the Graph
 
 * Use the pie chart in the sidebar to analyze the precision and recall metrics of the uploaded data. By hovering over the blue and red portion of the chart the exact precision and recall of the data is displayed. The pie chart also represents the proportions of precision and recall to each other to make the interpretation easier.
 
-
-![alt_text](images/metrics.png "metrics")
-
+<img src="img/metrics.png" alt="metrics" width="300">
 
 ### Interpreting Results
 
