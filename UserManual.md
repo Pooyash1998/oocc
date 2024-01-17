@@ -64,7 +64,7 @@ MIRROR (Module for Inspecting, Reporting, and Rendering Object Relationships) is
 2. Set Up Docker Environment:
 * Use Docker Compose to build and run the containers defined in `docker-compose.yml` file.
 
-	`docker-compose up --build`
+	```docker-compose up --build```
 
 
 # UI Overview
@@ -84,6 +84,7 @@ Overall, the MIRROR UI emphasizes a clear and intuitive approach to complex data
 
 # Advanced Features
 
+![alt_text](imag/UI.png "UI")
 
 ### File Import Compatibility
 
@@ -127,7 +128,7 @@ The metrics pie chart in the sidebar provides information about `precision` and 
 
 ### Stats Report
 
-With the `"Get Report"`- button the user can download a report in .txt format, with a number of statistics about the displayed graph and the object centric eventlog it is based on. The report includes information such as the number of events, process executions, variants and activities in the event log, and the number of the implicit and explicit nodes and edges of the graph such as the precision and recall metrics.
+With the `"Get Report`- button the user can download a report in .txt format, with a number of statistics about the displayed graph and the object centric eventlog it is based on. The report includes information such as the number of events, process executions, variants and activities in the event log, and the number of the implicit and explicit nodes and edges of the graph such as the precision and recall metrics.
 
 
 ### Graph Save
@@ -142,80 +143,88 @@ This section provides a step-by-step walkthrough of an example run in the MIRROR
 
 ### File Upload
 
-
-
 * Navigate to the MIRROR dashboard.
 * Click on the `"Import File"` button to open the file upload modal.
 * Use the drag-and-drop feature or click `"Browse"` to select your data file from your computer.
-
-
-![alt_text](images/image1.png "image_tooltip")
-
-
 * Ensure the file is in one of the supported formats: XML, XMLOCEL, or SQLite.
-* Once the file is selected, click on `"UPLOAD"` to proceed.
+* Once the file is selected, click on `"Upload"` to proceed.
 
+![alt_text](imag/import.png "import")
 
 ### Viewing the Graph
 
+* Following a successful upload and processing, the application will display a progress bar. Once the processing is complete, users will be presented with an interactive graph representing the object relationships derived from the uploaded object centric eventlog file.
 
-
-* Following a successful upload and processing, the application will display a progress bar. Once the processing is complete, users will be presented with an interactive graph representing the object relationships derived from the  uploaded object centric eventlog file.
-
-
-![alt_text](images/image2.png "image_tooltip")
+![alt_text](imag/image1.png "view_grpah")
 
 
 * You can interact with the graph by hovering on nodes or edges to view details about the specific object or relationship that is displayed, or by dragging nodes to reorganize the view.
 
+![alt_text](imag/tooltip.png "tooltip")
 
-![drawing](https://docs.google.com/drawings/d/12345/export/png)
+* In the bottom right of the graph is a Legend displayed to help interpret the different types of nodes and edges displayed in the graph.
 
 
-![drawing](https://docs.google.com/drawings/d/12345/export/png)
+![alt_text](images/legend.png "legend")
+
+
+* In the bottom left of the graph zoom controls can be found to zoom in and out of the graph or reset the view to default, by clicking the corresponding icons.
+
+
+![alt_text](images/zoom.png "zoom")
+
+
+* By holding left click and moving around with the cursor the graph can be moved around as a whole and the zoom level can also be adjusted using the mousewheel or touch gestures.
+* By “dragging and dropping” one specific node, the specific node and all nodes connected to it can be moved around, to specifically adjust the graph layout.
 
 
 ### Customizing the Graph
-
-
 
 * After uploading the sidebar can be opened by clicking on the hamburger icon on the left side of the header. Inside the sidebar various tools can be found to further customize and analyze the graph.
 * In the top part of the sidebar are 2 toggles to enable or disable the view of implicit and explicit relationships for an easier analysis for the different relationship types found in the event logs.
 
 
-![alt_text](images/image3.png "image_tooltip")
+![alt_text](images/toggles.png "toggles")
 
 
-* Below there is another toggle `"Coloring based on Object Type"` that colors all nodes based on the object type in the event logs, to make it easier to see what object types are connected to each other.
+* Below there is another toggle “Coloring based on Object Type” that colors all nodes based on the object type in the event logs, to make it easier to see what object types are connected to each other.
+
+![alt_text](images/colorswitch.png "colorswitch")
 
 
-![alt_text](images/image4.png "image_tooltip")
- 
+* In the “Filter Object Types”- Tab different objects can be marked in checkboxes to display only specific types of objects in the graph and filter out the rest. That helps when not all objects in the graph are of interest or relevant for analysis.
 
 
-### Using the Search Function ( $remove and update ot_checkbox)
+![alt_text](images/ot.png "ObjectType filtering")
+
+
+* To apply all the changes to the graph the “Update Graph”- button needs to be pressed after selecting the customization options.
+
+
+![alt_text](images/updateg.png "updateg")
+
+
+### Exporting Graph Data
+
+* With the “Save Graph”- button the graph currently displayed on the screen can be downloaded as a .svg file for further use outside of the application.
+* With the “Get Report”- button a .txt report file can be downloaded to get statistics about the graph and the event logs. The report contains the number of events, process executions, variants, such as the number or implicit and explicit nodes and edges in the graph.
 
 
 
-* Utilize the search bar to find specific elements within your data.
-* Enter the object ID you wanna look up and click “SEARCH” to locate the data point within the graph.
+![alt_text](images/export.png "export")
+
+![alt_text](images/report.png "report")
 
 
+### Precision and Recall Metrics of the Graph
 
-<p id="gdcalert7" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image5.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert8">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image5.png "image_tooltip")
+* Use the pie chart in the sidebar to analyze the precision and recall metrics of the uploaded data. By hovering over the blue and red portion of the chart the exact precision and recall of the data is displayed. The pie chart also represents the proportions of precision and recall to each other to make the interpretation easier.
 
 
-$ add metrics, zooming and panning (btn and touch gestures) , saving graph and report
+![alt_text](images/metrics.png "metrics")
 
 
-### Interpreting Results ($add logic for metrics) + Use case
-
-
+### Interpreting Results
 
 * Analyze the graph to interpret the object relationships. The color-coded nodes and edges help distinguish different types of connections and data points.
 * Use the visual cues to identify patterns, anomalies, or insights relevant to your analysis.
-
-$ names, titles, headings,font size, commands + photos, overall edit -> Convert to Markdown -> Git separate page -> release Tag 
