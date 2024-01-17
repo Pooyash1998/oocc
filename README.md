@@ -25,7 +25,7 @@ OOCC is a sophisticated software tool designed to compare and evaluate object-to
 1. Upload event logs using the provided interface.
 2. Analyze conformance and discrepancies using the visualization module.
 3. Export and share reports or graphs for further analysis.
-For detailed information on installation and usage, please refer to the [User Manual](/user-manual.md).
+For detailed information on installation and usage, please refer to the [User Manual](/UserManual.md).
 
 ## License
 This project is for Software Projekt Praktikum (SPP) at the Chair of Process and Data Science of RWTH University Aachen.
