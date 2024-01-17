@@ -64,7 +64,9 @@ MIRROR (Module for Inspecting, Reporting, and Rendering Object Relationships) is
 2. Set Up Docker Environment:
 * Use Docker Compose to build and run the containers defined in `docker-compose.yml` file.
 
-	```docker-compose up --build```
+	```
+    docker-compose up --build
+    ```
 
 
 # UI Overview
