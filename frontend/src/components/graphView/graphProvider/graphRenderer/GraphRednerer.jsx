@@ -106,7 +106,7 @@ const GraphRenderer = ({ data, colorSwitch=false}) => {
 
     const simulation = d3.forceSimulation()
       .force('link', d3.forceLink().id(d => d.id).distance(120))
-      .force('charge', d3.forceManyBody().strength(-15))
+      .force('charge', d3.forceManyBody().strength(-20))
       .force('center', d3.forceCenter(screenWidth / 2, screenHeight / 2));
 
     const color = d3.scaleOrdinal().range(['#3498db', '#2980b9', '#0077cc', '#006699', '#005580']);
@@ -174,6 +174,8 @@ const GraphRenderer = ({ data, colorSwitch=false}) => {
     simulation.force('link')
       .links(data.links);
 
+      // Reset forceBody strength when graph data is updated
+      simulation.force('charge').strength(-15);
       svg.call(zoom);
     return () => {
     

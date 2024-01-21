@@ -47,7 +47,7 @@ def merge_graph_data(imp_graph_data, exp_graph_data):
     return merged_graph_data
 
 def get_random_subset(GraphData):
-    subset_size = 200
+    subset_size = 400
 
     # Randomly select a subset of edges
     random_links = random.sample(GraphData['links'], min(subset_size, len(GraphData['links'])))
